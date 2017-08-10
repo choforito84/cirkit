@@ -1,3 +1,1 @@
-theme: jekyll-theme-minimal
-exclude: 
-  -"README*"
+exclude: ["README*","REAME*"]
