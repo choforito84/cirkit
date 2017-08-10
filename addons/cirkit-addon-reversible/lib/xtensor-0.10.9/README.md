@@ -54,9 +54,7 @@ make install
 #include "xtensor/xio.hpp"
 
 xt::xarray<double> arr1
-  {{1.0, 2.0, 3.0},
-   {2.0, 5.0, 7.0},
-   {2.0, 5.0, 7.0}};
+  {{1.0, 2.0, 3.0}, {2.0, 5.0, 7.0},{2.0, 5.0, 7.0}};
 
 xt::xarray<double> arr2
   {5.0, 6.0, 7.0};
@@ -90,9 +88,7 @@ std::cout << arr;
 Outputs:
 
 ```
-{{1, 2, 3},
- {4, 5, 6},
- {7, 8, 9}}
+{{1, 2, 3}, {4, 5, 6}, {7, 8, 9}}
 ```
 
 ## The Numpy to xtensor cheat sheet
