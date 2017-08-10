@@ -88,11 +88,8 @@ std::cout << arr;
 ```
 
 Outputs:
-
 ```
-{{1, 2, 3},
- {4, 5, 6},
- {7, 8, 9}}
+{{1, 2, 3}, {4, 5, 6}, {7, 8, 9}}
 ```
 
 ## The Numpy to xtensor cheat sheet
