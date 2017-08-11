@@ -34,7 +34,7 @@ The following table lists all the simulation commands of Revkit, along with a sh
 |command | description |
 | ------ | ----------- |
 |`is_identity` | Checks if circuit in store computes the identity function. |
-|`rec` | Equivalence checking for two circuits on store. The location in store of the circuits is given as arguments with flags `--id1` and `--id2` respectively. |
+|`rec` | Equivalence checking for two circuits on store. The location in store of the circuits is given as arguments with flags `--id1` and `--id2` respectively. In order to use this command, the **cryptominisat** program must be installed and its executable must be added to the PATH variable. This can be done using CirKIt's package manager |
 |`revsim` | Simulate the output of $n$-bits for an $n-$line circuit in store. The input bit pattern must be specified by flag `-p. --pattern` followed by an $n$-bit string. |
 
 
