@@ -111,10 +111,10 @@ Revkit also includes some commands to output a reversible circuit data structure
 
 | Output command | Software | Notes |
 | -------------- | -------- | ------ |
-| `write_liquid` | [LIQUi\|> (Liquid)](https://www.microsoft.com/en-us/research/project/language-integrated-quantum-operations-liqui/) | Software architecture and toolsuite for quantum computing developed by Microsoft Research.\cite{liquid`|
+| `write_liquid` | [LIQUi\|> (Liquid)](https://www.microsoft.com/en-us/research/project/language-integrated-quantum-operations-liqui/) | Software architecture and toolsuite for quantum computing developed by Microsoft Research.|
 | `write_projectq` | [ProjectQ](https://projectq.ch/) |  Open source software framework for quantum computing started at Swiss Federal Institute of Technology in Zurich |
 | `write_quipper` | [Quipper Language](http://www.mathstat.dal.ca/~selinger/quipper/) | Embedded, scalable functional programming language for quantum computing.|
-| `write_qpic` | [Qpic](https://github.com/qpic/qpic) | Python based tool for drawing quantum circuits via Latex\cite{qpic`. |
+| `write_qpic` | [Qpic](https://github.com/qpic/qpic) | Python based tool for drawing quantum circuits via Latex. |
 | `write_numpy` | Numpy package for Python | Simulation of a reversible circuit built using Numpy library in Python.|
 | `write_tikz` | Tikz package of Latex | Latex package for making diagrams and drawings. |
 

@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        
+        
+        <link rel="shortcut icon" href="../img/favicon.ico">
+
+	<title>Basic Usage - Revkit user guide</title>
+
+        <link href="../css/bootstrap-3.0.3.min.css" rel="stylesheet">
+        <link href="../css/font-awesome-4.0.3.css" rel="stylesheet">
+        <link rel="stylesheet" href="../css/highlight.css">
+        <link href="../css/base.css" rel="stylesheet">
+
+        <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!--[if lt IE 9]>
+            <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+            <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+        <![endif]-->
+
+        
+    </head>
+
+    <body>
+
+        <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+    <div class="container">
+
+        <!-- Collapsed navigation -->
+        <div class="navbar-header">
+            <!-- Expander button -->
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+
+            <!-- Main title -->
+            <a class="navbar-brand" href="..">Revkit user guide</a>
+        </div>
+
+        <!-- Expanded navigation -->
+        <div class="navbar-collapse collapse">
+            <!-- Main navigation -->
+            <ul class="nav navbar-nav">
+            
+            
+                <li >
+                    <a href="..">Home</a>
+                </li>
+            
+            
+            
+                <li class="active">
+                    <a href="./">Basic Usage</a>
+                </li>
+            
+            
+            
+                <li >
+                    <a href="../Examples/">Examples</a>
+                </li>
+            
+            
+            
+                <li >
+                    <a href="../Reversible Tools/">Reversible Tools</a>
+                </li>
+            
+            
+            </ul>
+
+            <!-- Search, Navigation and Repo links -->
+            <ul class="nav navbar-nav navbar-right">
+                <li >
+                    <a rel="next" href="..">
+                        <i class="fa fa-arrow-left"></i> Previous
+                    </a>
+                </li>
+                <li >
+                    <a rel="prev" href="../Examples/">
+                        Next <i class="fa fa-arrow-right"></i>
+                    </a>
+                </li>
+                
+            </ul>
+        </div>
+    </div>
+</div>
+
+        <div class="container">
+            <div class="col-md-3"><div class="bs-sidebar hidden-print affix well" role="complementary">
+    <ul class="nav bs-sidenav">
+    
+        <li class="main active"><a href="#basic-usage">Basic Usage</a></li>
+        
+            <li><a href="#executing-revkit">Executing Revkit</a></li>
+        
+            <li><a href="#creating-logs">Creating logs</a></li>
+        
+            <li><a href="#aliases">Aliases</a></li>
+        
+            <li><a href="#data-structures">Data Structures</a></li>
+        
+            <li><a href="#input-and-output">Input and Output</a></li>
+        
+            <li><a href="#memory-stores">Memory Stores</a></li>
+        
+            <li><a href="#making-diagrams-of-circuits">Making diagrams of circuits</a></li>
+        
+    
+    </ul>
+</div></div>
+            <div class="col-md-9" role="main">
+
+<h1 id="basic-usage">Basic Usage</h1>
+<h2 id="executing-revkit">Executing Revkit</h2>
+<p>Revkit is a command line based program, so it does not have a graphical user interface. When Revkit is executed from a terminal, a shell prompt is printed to the screen with the text <code>revkit&gt;</code> that replace the current directory normally displayed by a terminal. </p>
+<p>To get a list of all the commands and a short description of their usage, one must call the <code>help</code> command. To view more information of each command, run the command with the <code>--help</code> flag. In general, there are three ways to run a program in Revkit:</p>
+<ol>
+<li>Interactive mode: the default command line shell that it is described above. Every command must be written by the user. It is accessed by simply executing Revkit with its alias: </li>
+</ol>
+<pre><code>~$ revkit
+revkit&gt;  read_aiger file.aig
+revkit&gt;  cone -o y
+revkit&gt;  simulate -ad
+revkit&gt;  quit
+~$
+</code></pre>
+
+<ol>
+<li>Bash mode: mode where a list of commands  are given to Revkit as command line arguments.To run this method, one must execute Revkit with a <code>-c</code> flag:</li>
+</ol>
+<pre><code>~$ revkit -c &quot;read_aiger file.aig; cone -o y; simulate -at; quit&quot;
+</code></pre>
+
+<p>If you want that every command executed is printed on the screen, add the <code>-e</code> flag</p>
+<ol>
+<li>Batch mode: mode where the list of commands executed are read line by line from a text file. To run this method, one must use call revkit with a <code>-f</code> flag followed by the name of the file with the commands:</li>
+</ol>
+<pre><code>~$ revkit -f commands.txt
+</code></pre>
+
+<p>As in bash mode, if you want to print every command used, you can add the <code>-e</code> flag.</p>
+<p>It must be noticed that any line beginning with the "#" character will not be read by Revkit. This is particularly useful for making comments for scripts that will run in Batch mode.</p>
+<h2 id="creating-logs">Creating logs</h2>
+<p>Passing <code>-l file.log</code> to Revkit creates a log file of the session. This option is particularly useful in batch mode. The log file contains a JSON array with an entry for each command. Each entry contains at least the full command that was run and the time at which the command was started to execute. Some commands write additional data into the log file. </p>
+<p>For example, <code>ps -a</code> writes number of inputs, outputs, and AND gates of an AIG, and <code>quit</code> writes several information about the computer on which Revkit has been executed. Being a JSON array, the log file can be easily parsed as many programming languages have a JSON library.
+\
+\
+Some helper functions to parse the log file and, e.g., create ASCII tables from them can be found in <code>utils/experiments.py</code>. Further, the Python program <code>utils/extract\_script.py</code> extracts a CirKit script file from the the log that can be run in batch mode. This can be helpful when logging an interactive session and then rerunning the commands:</p>
+<pre><code>~/cirkit$ revkit -l session.log
+revkit&gt;  read_aiger file.aig
+revkit&gt;  ps -a
+...
+revkit&gt;  quit
+cirkit$ utils/extract_script.py session.log &gt; session.cs
+cirkit$ revkit -f session.cs
+</code></pre>
+
+<p>For performing experimental evaluations, the following workflow is suggested. Create two Python programs (or any other programming language) called <code>make_script.py</code> and <code>make_table.py</code>. The program <code>make_script.py</code> writes a CirKit script. The program <code>make_table.py</code> reads the log file created for the script and prints out a table:</p>
+<pre><code>~/cirkit$ ./make_script.cs experiments.cs
+~/cirkit$ revkit -f experiments.cs -l experiments.log
+~/cirkit$ ./make_table.cs experiments.log
+</code></pre>
+
+<h2 id="aliases">Aliases</h2>
+<p>In a traditional programming language, an alias is a function that uses as a basis internal functions of the program to compute a not defined task. In a similar fashion, Revkit allows the definition of aliases: a group of commands and procedures grouped under a single key. An alias is created with the <code>alias</code> command of Revkit. To define an alias we need a key, a string with no spaces, and the list of commands executed by that key. For example:</p>
+<pre><code>revkit&gt; alias simul &quot;convert --circuit_to_spec ; print -s&quot;
+</code></pre>
+
+<p>Note that the command list has to be put into quotes if they contain any space. To add more flexibillity and options to the alias, one can use <a href="https://docs.microsoft.com/en-us/dotnet/standard/base-types/regular-expression-language-quick-reference">regular expressions</a>:</p>
+<pre><code>alias &quot;(\\w+) &gt; (\\w+) &gt; (\\w+)&quot; &quot;convert --%1%_to_%2%; convert --%2%_to_%3%&quot;
+</code></pre>
+
+<p>The <code>alias</code> command only creates aliases for the current session of Revkit. To add an alias that will we global for all of Revkit's session, add the wished <code>alias</code> command to a new line of the <code>alias</code> text file located in cirkit's main repository.</p>
+<h2 id="data-structures">Data Structures</h2>
+<p>Revkit can manipulate and analize a good number of data structures that represent either a boolean function or a reversible circuit. The following table lists the data structures included in Revkit. </p>
+<table>
+<thead>
+<tr>
+<th align="center">Data structure</th>
+<th>Access options</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="center">Expression</td>
+<td><code>-e</code>,<code>--expr</code></td>
+</tr>
+<tr>
+<td align="center">And-inverter graph</td>
+<td><code>-a</code>,<code>--aig</code></td>
+</tr>
+<tr>
+<td align="center">XOR majority graph</td>
+<td><code>-x</code>,<code>--xmg</code></td>
+</tr>
+<tr>
+<td align="center">Binary decision diagram</td>
+<td><code>-b</code>,<code>--bdd</code></td>
+</tr>
+<tr>
+<td align="center">Reversible circuit</td>
+<td><code>-c</code>,<code>--circuit</code></td>
+</tr>
+<tr>
+<td align="center">Reversible specification</td>
+<td><code>-s</code>,<code>--spec</code></td>
+</tr>
+<tr>
+<td align="center">BDD of a characteristic reversible function (RCBDD)</td>
+<td><code>-r</code>,<code>--rcbdd</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="input-and-output">Input and Output</h2>
+<p>In general, in order to create an instance of a data structure in Revkit we need to import the data structure from a file format that describes the data structure. The expressions are the only structure that can be created inside of Revkit by using the <code>expr</code> command. </p>
+<p>The data structures can also be exported to this same file format. The following table lists all of the data structures input and output commands used in Revkit along with a short decription.</p>
+<table>
+<thead>
+<tr>
+<th>Data structure</th>
+<th>Format</th>
+<th>Input function</th>
+<th>Output function</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Reversible circuits</td>
+<td>REAL</td>
+<td><code>read_real</code></td>
+<td><code>write_real</code></td>
+<td>Reversible circuit representation using different gates as basis. Part of <a href="http://www.revlib.org/">Revlib</a> supported <a href="http://www.informatik.uni-bremen.de/rev_lib/doc/docu/revlib_2_0_1.pdf">formats</a>.</td>
+</tr>
+<tr>
+<td>Reversible specification</td>
+<td>SPEC</td>
+<td><code>read_spec</code></td>
+<td><code>write_spec</code></td>
+<td>Truth table of a reversible circuit. <a href="http://www.revlib.org/">Revlib</a> supported <a href="http://www.informatik.uni-bremen.de/rev_lib/doc/docu/revlib_2_0_1.pdf">formats</a>.</td>
+</tr>
+<tr>
+<td>Binary decision diagram</td>
+<td>PLA</td>
+<td><code>read_pla</code></td>
+<td><code>write_pla</code></td>
+<td>Sum of products representation of a Boolean function. <a href="http://www.revlib.org/">Revlib</a> supported <a href="http://www.informatik.uni-bremen.de/rev_lib/doc/docu/revlib_2_0_1.pdf">formats</a>.</td>
+</tr>
+<tr>
+<td>XOR majority graph</td>
+<td>Verilog</td>
+<td><code>read_verilog -x</code></td>
+<td><code>write_verilog -x</code></td>
+<td><a href="http://ieeexplore.ieee.org/document/1620780/">Verilog</a> standard format for a XOR majority graph representation.</td>
+</tr>
+<tr>
+<td>And-inverter graph</td>
+<td>Verilog</td>
+<td><code>read_verilog -a</code></td>
+<td><code>write_verilog -a</code></td>
+<td><a href="http://ieeexplore.ieee.org/document/1620780/">Verilog</a> standard format for a And-inverter graph representation.</td>
+</tr>
+<tr>
+<td>And-inverter graph</td>
+<td>AIGER</td>
+<td><code>read_aiger</code></td>
+<td><code>write_aiger</code></td>
+<td>Format developed for the <a href="http://fmv.jku.at/aiger/">AIGER utlity set</a>.</td>
+</tr>
+<tr>
+<td>And-inverter graph</td>
+<td>BENCH</td>
+<td><code>read_bench</code></td>
+<td>-</td>
+<td>Format developed for traditional circuits as part of the Berkeley's <a href="https://people.eecs.berkeley.edu/~alanmi/abc/abc.htm">ABC system</a>.</td>
+</tr>
+</tbody>
+</table>
+<p>The "-" sign indicates that no command exists.`</p>
+<p>The precise details of the usage of the input and output functions and memory allocation of Revkit will be addressed in the next section.</p>
+<p>Revkit also includes some commands to output a reversible circuit data structure to formats of certain quantum computing softwares. The following table lists this commands along with its compatible software and some notes.</p>
+<table>
+<thead>
+<tr>
+<th>Output command</th>
+<th>Software</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>write_liquid</code></td>
+<td><a href="https://www.microsoft.com/en-us/research/project/language-integrated-quantum-operations-liqui/">LIQUi|&gt; (Liquid)</a></td>
+<td>Software architecture and toolsuite for quantum computing developed by Microsoft Research.\cite{liquid`</td>
+</tr>
+<tr>
+<td><code>write_projectq</code></td>
+<td><a href="https://projectq.ch/">ProjectQ</a></td>
+<td>Open source software framework for quantum computing started at Swiss Federal Institute of Technology in Zurich</td>
+</tr>
+<tr>
+<td><code>write_quipper</code></td>
+<td><a href="http://www.mathstat.dal.ca/~selinger/quipper/">Quipper Language</a></td>
+<td>Embedded, scalable functional programming language for quantum computing.</td>
+</tr>
+<tr>
+<td><code>write_qpic</code></td>
+<td><a href="https://github.com/qpic/qpic">Qpic</a></td>
+<td>Python based tool for drawing quantum circuits via Latex\cite{qpic`.</td>
+</tr>
+<tr>
+<td><code>write_numpy</code></td>
+<td>Numpy package for Python</td>
+<td>Simulation of a reversible circuit built using Numpy library in Python.</td>
+</tr>
+<tr>
+<td><code>write_tikz</code></td>
+<td>Tikz package of Latex</td>
+<td>Latex package for making diagrams and drawings.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="memory-stores">Memory Stores</h2>
+<p>Every time we create an instance of a data structure in Revkit, this structure is saved in a stored in a fixed memory location called <em>Store</em>. A store can be thought of as an unfixed vector of elements of a given data structure. Each data structure has its own store. </p>
+<p>The <code>store</code> command is used to access and make changes over the stores of Revkit. All stores can hold more than one instance of its data structure. As most commands in Revkit take as an input a data structure, the input is not normally specified: each store has a pointer that each commands takes as an input when it reaches for that data structure as an input. This pointer can be set with the <code>current</code> command .</p>
+<p>To see a list all the elements in the store of a given data structure, execute the command <code>store --show</code> followed by the access option of the data structure. For example:</p>
+<pre><code>revkit&gt;  store --show -c
+[i] circuits in store:
+     0: 7 lines, 55 gates
+     1: 5 lines, 2 gates
+  *  2: 4 lines, 3 gates
+</code></pre>
+
+<p>The <code>*</code> symbol shows which element to which element of the store is the pointer set. To change the element to which the pointer points, we use the <code>current</code> command. This command takes as an argument the access option of the data structure store you wish to access and the number of the element in the store to which you want to set the pointer to point. </p>
+<pre><code>revkit&gt;  store --show -c
+revkit&gt;  store --show -c
+[i] circuits in store:
+     0: 7 lines, 55 gates
+     1: 5 lines, 2 gates
+  *  2: 4 lines, 3 gates
+revkit&gt;  current -c 1
+revkit&gt;  store --show -c
+[i] circuits in store:
+     0: 7 lines, 55 gates
+  *  1: 5 lines, 2 gates
+     2: 4 lines, 3 gates
+</code></pre>
+
+<p>As we mentioned before, every command that takes a data structure as input and/or a data structure as output will read or overwrite the current element in the pointer of its store. For the input of most commands, this behaviour can not be modified. Most of the commands that output a data structure have an option with flag <code>-n, --new</code> that specifies that the output data structure is stored in a new element of the store. </p>
+<p>This is particularly useful for the <code>read_*</code> commands. For example. if we have a circuit in store and call the <code>read_real</code> function on a file, the new circuit will be written in the pointer. But if we call the command with the flag <code>read\_real -n</code>, it will be saved in a new element of the store.</p>
+<pre><code>revkit&gt;  read_real template1.real
+revkit&gt;  read_real template2.real
+revkit&gt;  store --show -c
+[i] circuits in store:
+  *  0: 3 lines, 2 gates
+revkit&gt;  read_real template1.real
+revkit&gt;  read_real -n template2.real
+revkit&gt;  store --show -c
+[i] circuits in store:
+     0: 3 lines, 2 gates
+  *  1: 3 lines, 2 gates
+</code></pre>
+
+<p>To delete all the items in a store, call the <code>store</code> command with the <code>--clear</code> flag followed by the access option of the data structure:</p>
+<pre><code>revkit&gt;  store --show -c
+[i] circuits in store:
+     0: 3 lines, 2 gates
+  *  1: 3 lines, 2 gates
+revkit&gt;  store --clear -c
+revkit&gt;  store --show -c
+[i] no circuits in store
+</code></pre>
+
+<p>Most of Revkit commands are sufficiently specific function or name, like the synthesis commands, to need specification over which data structure are operating. However, there are a series of generic commands that can operate on every data structure so we must specify the access option of the store of the data structure over which we want the command to act. The following table lists this commands.</p>
+<table>
+<thead>
+<tr>
+<th>Command</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>current</code></td>
+<td>Changes the current store pointer</td>
+</tr>
+<tr>
+<td><code>print</code></td>
+<td>Prints a textual ASCII representation of the current store element</td>
+</tr>
+<tr>
+<td><code>ps</code></td>
+<td>Prints statistical information about the current store element</td>
+</tr>
+<tr>
+<td><code>show</code></td>
+<td>Visualizes the current store element (writes to a dot file)</td>
+</tr>
+<tr>
+<td><code>store</code></td>
+<td>Shows and clears elements from the store</td>
+</tr>
+</tbody>
+</table>
+<h2 id="making-diagrams-of-circuits">Making diagrams of circuits</h2>
+<p>Revkit can also be used for creating diagrams of reversible circuits. The diagrams are created using Latex, in particular, the <code>TikZ</code> and <code>preview</code> packages. It is recommended to make a complete Tex installation on the computer via <a href="https://www.tug.org/texlive/">TexLive</a> or <a href="http://www.tug.org/mactex/">MacTex</a>. A full installation of Tex is available for all users in the ULeth Linux system.</p>
+<p>There are two principal ways in wich we can convert a circuit stored in Revkit to a diagram.</p>
+<h3 id="png-via-qpic-and-latex">PNG via Qpic and Latex</h3>
+<p>To create a PNG image of our circuit we have to use a auxiliary program called <a href="https://github.com/qpic/qpic">Qpic</a>. This is a Python-based program used to draw quantum circuits. Installation instructions are available inside its Github repository. After installing Qpic and supposing that we have a<code>.real</code> file describing a circuit called <code>circuit.real</code>, we can convert it to PNG using the following command:</p>
+<pre><code>$ revkit -c &quot;read_real circuit.real; write_qpic circuit.qpic&quot;
+$ qpic circuit.qpic -f png -o circuit.png
+</code></pre>
+
+<p>The first command uses revkit to read the circuit and to output a .qpic file called <code>circuit.qpic</code>. The second command calls qpic to convert the <code>circuit.qpic</code> file into <code>circuit.png</code>. The output file is specified with the <code>-o</code> arrgument as the output format is specified by the <code>-f</code> argument. Other outputs format include .tex,.pdf and .tikz.</p>
+<h3 id="pdf-via-latex">PDF via Latex</h3>
+<p>To create the drawing directly with Revkit to a .pdf file, we should use the following commands:</p>
+<pre><code>$ revkit -c &quot;read_real circuit.real; write_tikz --standalone circuit.tex&quot;
+$ pdflatex circuit.tex
+</code></pre>
+
+<p>The first command uses revkit to read the circuit and to ouput a .tex file called <code>circuit.tex</code> that is compiled by the second command to a .pdf file called <code>circuit.pdf</code> that contains the drawing of the circuit. the <code>--standalone</code> indicates that the file created is going to be compiled alone and not as part of a larger Latex project.</p></div>
+        </div>
+
+	<footer class="col-md-12">
+		<hr>
+		
+		<p>Documentation built with <a href="http://www.mkdocs.org/">MkDocs</a>.</p>
+	</footer>
+
+
+        <script src="../js/jquery-1.10.2.min.js"></script>
+        <script src="../js/bootstrap-3.0.3.min.js"></script>
+        <script src="../js/highlight.pack.js"></script>
+        <script src="../js/base.js"></script>
+    </body>
+</html>

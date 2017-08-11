@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        
+        
+        <link rel="shortcut icon" href="./img/favicon.ico">
+
+	<title>Revkit user guide</title>
+
+        <link href="./css/bootstrap-3.0.3.min.css" rel="stylesheet">
+        <link href="./css/font-awesome-4.0.3.css" rel="stylesheet">
+        <link rel="stylesheet" href="./css/highlight.css">
+        <link href="./css/base.css" rel="stylesheet">
+
+        <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!--[if lt IE 9]>
+            <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+            <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+        <![endif]-->
+
+        
+    </head>
+
+    <body>
+
+        <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+    <div class="container">
+
+        <!-- Collapsed navigation -->
+        <div class="navbar-header">
+            <!-- Expander button -->
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+
+            <!-- Main title -->
+            <a class="navbar-brand" href=".">Revkit user guide</a>
+        </div>
+
+        <!-- Expanded navigation -->
+        <div class="navbar-collapse collapse">
+            <!-- Main navigation -->
+            <ul class="nav navbar-nav">
+            
+            
+                <li class="active">
+                    <a href=".">Home</a>
+                </li>
+            
+            
+            
+                <li >
+                    <a href="Basic Usage/">Basic Usage</a>
+                </li>
+            
+            
+            
+                <li >
+                    <a href="Examples/">Examples</a>
+                </li>
+            
+            
+            
+                <li >
+                    <a href="Reversible Tools/">Reversible Tools</a>
+                </li>
+            
+            
+            </ul>
+
+            <!-- Search, Navigation and Repo links -->
+            <ul class="nav navbar-nav navbar-right">
+                <li class="disabled">
+                    <a rel="next" >
+                        <i class="fa fa-arrow-left"></i> Previous
+                    </a>
+                </li>
+                <li >
+                    <a rel="prev" href="Basic Usage/">
+                        Next <i class="fa fa-arrow-right"></i>
+                    </a>
+                </li>
+                
+            </ul>
+        </div>
+    </div>
+</div>
+
+        <div class="container">
+            <div class="col-md-3"><div class="bs-sidebar hidden-print affix well" role="complementary">
+    <ul class="nav bs-sidenav">
+    
+        <li class="main active"><a href="#revkit-user-guide">Revkit user guide</a></li>
+        
+            <li><a href="#about-the-installation">About the installation</a></li>
+        
+            <li><a href="#requirements">Requirements</a></li>
+        
+            <li><a href="#internal-package-manager">Internal Package Manager</a></li>
+        
+            <li><a href="#installation-in-ubuntu">Installation in Ubuntu</a></li>
+        
+            <li><a href="#installation-in-uleth-linux-system">Installation in ULeth linux system</a></li>
+        
+    
+    </ul>
+</div></div>
+            <div class="col-md-9" role="main">
+
+<h1 id="revkit-user-guide">Revkit user guide</h1>
+<p>This is intended to serve as an user guide for Revkit, a reversible logic toolkit program. Revkit is now a part of <a href="https://github.com/msoeken/cirkit">CirKit</a>, a toolkit program for logic created by Mathias Soeken at the École Polythechnique Fedérale de Lausanne.</p>
+<p>This user manual contains a list of most commands in Revkit along with their description, along with a section completely dedicated to examples of the code. </p>
+<h2 id="about-the-installation">About the installation</h2>
+<p>Although in Cirkit's repository we can find instructions for installing Revkit, here we will detail how to make a clean installation of Revkit inside Ubuntu and inside the Uleth Linux System, a Centos7-based computer network designed for the Computer Science and Mathematics deparment memebers at the University of Lethbridge in Alberta, Canada.</p>
+<p>Cirkit is supported by UNIX-like systems such as MacOS and Linux distributions.</p>
+<h2 id="requirements">Requirements</h2>
+<p>The following sofware is needed in order to build Revkit</p>
+<ul>
+<li>git</li>
+<li>cmake (at least version 3.0.0)</li>
+<li>g++ (at least version 4.9.0) or clang++ (at least version 3.5.0)</li>
+<li>boost (at least version 1.56.0)</li>
+<li>GNU MP, and its C++ interface GMP++</li>
+<li>GNU readline</li>
+</ul>
+<h2 id="internal-package-manager">Internal Package Manager</h2>
+<p>CirKit uses some external (mainly academic) programs that are typically not shipped with Linux distributions.  To ease their installation CirKit provides its own small package manager that can be invoked via <code>utils/tools.py</code>.  Run    </p>
+<pre><code class="bash">utils/tools.py commands
+</code></pre>
+
+<p>to see a document list of the options of this package manager and learn how it can be executed.  The programs are automatically downloaded and build, binaries are installed in the <code>ext/bin</code> folder of CirKit's main directory.</p>
+<p>It must be noticed that, if we want to install a program through this package manager and then use in general in our system, we must update the <code>PATH</code> environment variable using the following command:</p>
+<pre><code class="bash">export PATH=&lt;path-to-cirkit&gt;/ext/bin:$PATH`.
+</code></pre>
+
+<p>This indicates the system to look for binaries of programs inside the <code>ext/bin</code> folder of CirKit's main repository before searching in system folders. </p>
+<h2 id="installation-in-ubuntu">Installation in Ubuntu</h2>
+<p>The following instructions for installing Revkit in Ubuntu are also included in CirKit's Github repository. First of all, we need to install the dependencies needed for Revkit using Ubuntu's package manager. The following command must be executed from a terminal:</p>
+<pre><code class="bash">sudo apt-get install build-essential git g++ cmake libboost-all-dev libgmp3-dev libxml2-dev zlib1g-dev lapack openblas
+</code></pre>
+
+<p>After installing these dependencies, we are ready for cloning the Github repository using the following command: </p>
+<pre><code class="bash">git clone https://github.com/msoeken/cirkit.git
+cd cirkit
+</code></pre>
+
+<p>After this step, we need to create and update some environment variables of the system. To do that, run the following commands in the same terminal:</p>
+<pre><code class="bash">export CIRKIT_HOME=&lt;full-path-to-cirkit-repository&gt;
+export LD_LIBRARY_PATH=$CIRKIT_HOME/ext/lib:$LD_LIBRARY_PATH
+export PATH=$CIRKIT_HOME/ext/bin:$PATH
+</code></pre>
+
+<p>Now, to install Revkit we must run the following commands from the terminal:</p>
+<pre><code class="bash">mkdir build
+cd build
+cmake -Denable_cirkit-addon-reversible=ON -Denable_cirkit-addon-formal=ON ..
+make external
+make revkit
+</code></pre>
+
+<p>The first two commands create a directory called "build" inside of Cirkit main directory and changes the terminal location to it. The following three commands build Revkit from the cmake configuration files created along it.</p>
+<h3 id="manually-installing-boost">Manually installing Boost</h3>
+<p>Even though the Boost library installed from Ubuntu's package manager is higher than the requirement from Revkit (1.58.0 at Ubuntu;s package manager, Revkit requires higher than 1.56.0), this version is fairly old and it can cause some problems when installing Revkit. To avoid this problems, we recommend installing a newer version of Boost (1.64.0) by downloading it from their official website and then installing it. This can be accomplished with the following commands:</p>
+<pre><code class="bash">wget https://dl.bintray.com/boostorg/release/1.64.0/source/boost_1_64_0.tar.gz
+tar xzvf boost_1_64_0.tar.gz
+cd boost_1_64_0.tar.gz/
+sudo apt-get update
+sudo apt-get install build-essential g++ python-dev autotools-dev libicu-dev build-essential libbz2-dev 
+./bootstrap.sh --prefix=/usr/
+./b2
+sudo ./b2 install 
+</code></pre>
+
+<p>The first three lines downloads, uncompress Boost and changes the terminal direction to Boost main directory. The following two lines use Ubuntu's package manager to install tools needed for Boosts installation. The last three lines compile and install Boost under the '/usr/' directory of the user.</p>
+<h2 id="installation-in-uleth-linux-system">Installation in ULeth linux system</h2>
+<p>To install Revkit in ULeth linux system we face several problems due to the complexity of the system and to not having root permission. The problems can be listed as the following.</p>
+<ul>
+<li><strong>Disk quota issue:</strong>  The disk space available for each user at the ULeth linux system is low relatively to the system size (the installation is of around 2.5 GB). The solution to this is to install it locally on each computer you are working or using a shared partition in the system. For anyone without much experience with the system, the system administrator assistance is needed.</li>
+<li><strong>Dependencies issue:</strong>  although all of the dependencies needed to install the program are included in the system, some of them are not updated and can not be used safely by Revkit. </li>
+<li><strong>Compiling issues:</strong> As a result of being written in C++, there can be problems compiling it if previous built has failed due to the usage of CCache by GCC. Basically, CCache stores compilations of C/C++ code so that compiling a program several times is made with lower downtime. However, for builds that have failed, CCache uses that same compilation so it forces that any further build have the same error, even if you have corrected it. </li>
+</ul>
+<p>So solve the <strong>Disk Quota issues</strong>, the first step in the installation is to a file location in the system must be found with enough free space (more than 3 GB) to clone the github repository and perform the installation. After that, clone the Github repository:</p>
+<pre><code class="bash">~$ git clone https://github.com/msoeken/cirkit.git
+~$ cd cirkit
+</code></pre>
+
+<h3 id="installing-dependencies">Installing dependencies</h3>
+<p>Due to the high dependencies requirements of Cirkit, it can not be installed easily on a system without having root privileges to update and install all of the dependencies needed. However, it can be installed using the internal package manager. In the following we will list each dependency and its status at the ULeth linux system:</p>
+<ul>
+<li><strong>git :</strong> included in the linux system and updated.</li>
+<li><strong>GNU MP and GMP++ :</strong> included in the linux system and updated.</li>
+<li><strong>GNU readline :</strong> included in the linux system and updated.</li>
+<li><strong>GCC :</strong> included in the linux system but out of date. Cirkit requires a version higher than 4.9.0, meanwhile the system is at 4.8.5.</li>
+<li><strong>cmake :</strong> included in the linux system but out of date. Revkit requires a version higher than 3.0.0 and the system is in 2.8.5.</li>
+<li><strong>boost :</strong> included in the linux system but out of date. Revkit requires a version higher than 1.56.0 and the system is in 1.53.0.</li>
+</ul>
+<p>Although it would seem that a simple update made by the system administrator would be enough to be able to install Revkit, Boost and C++ cannot be updated because it generates problems with other programs in the system. </p>
+<p>Cirkit's included package manager allows us to install local versions of the needed programs without the use of root privileges. Inside the main directory of the repository, open a terminal and run the following commands:</p>
+<pre><code class="bash"> utils/tools.py install boost
+ utils/tools.py install gcc
+ utils/tools.py install cmake
+</code></pre>
+
+<p>It is very likely that the terminal throws an error when installing <code>gcc</code>, but this problem is not for installing GCC other than for installing other dependencies, in particular, for ISL. After this step, we need to create and update some environment variables of the system. To do that, run the following commands in the same terminal:</p>
+<pre><code class="bash">export CIRKIT_HOME=&lt;full-path-to-cirkit-repository&gt;
+export LD_LIBRARY_PATH=$CIRKIT_HOME/ext/lib:$LD_LIBRARY_PATH
+export PATH=$CIRKIT_HOME/ext/bin:$PATH
+</code></pre></div>
+        </div>
+
+	<footer class="col-md-12">
+		<hr>
+		
+		<p>Documentation built with <a href="http://www.mkdocs.org/">MkDocs</a>.</p>
+	</footer>
+
+
+        <script src="./js/jquery-1.10.2.min.js"></script>
+        <script src="./js/bootstrap-3.0.3.min.js"></script>
+        <script src="./js/highlight.pack.js"></script>
+        <script src="./js/base.js"></script>
+    </body>
+</html>
