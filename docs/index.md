@@ -1,6 +1,6 @@
 # Revkit user guide
 
-This is intended to serve as an user guide for Revkit, a reversible logic toolkit program. Revkit is now a part of [Cirkit](https://github.com/msoeken/cirkit), a toolkit program for logic created by Mathias Soeken at the École Polythechnique Fedérale de Lausanne.
+This is intended to serve as an user guide for Revkit, a reversible logic toolkit program. Revkit is now a part of [CirKit](https://github.com/msoeken/cirkit), a toolkit program for logic created by Mathias Soeken at the École Polythechnique Fedérale de Lausanne.
 
 This user manual contains a list of most commands in Revkit along with their description, along with a section completely dedicated to examples of the code. 
 
@@ -10,8 +10,37 @@ Although in Cirkit's repository we can find instructions for installing Revkit, 
 
 Cirkit is supported by UNIX-like systems such as MacOS and Linux distributions.
 
+## Requirements
+
+The following sofware is needed in order to build Revkit
+
++ git
++ cmake (at least version 3.0.0)
++ g++ (at least version 4.9.0) or clang++ (at least version 3.5.0)
++ boost (at least version 1.56.0)
++ GNU MP, and its C++ interface GMP++
++ GNU readline
+
+## Internal Package Manager
+
+CirKit uses some external (mainly academic) programs that are typically not shipped with Linux distributions.  To ease their installation CirKit provides its own small package manager that can be invoked via `utils/tools.py`.  Run    
+
+```bash
+utils/tools.py commands
+```
+to see a document list of the options of this package manager and learn how it can be executed.  The programs are automatically downloaded and build, binaries are installed in the `ext/bin` folder of CirKit's main directory.
+
+It must be noticed that, if we want to install a program through this package manager and then use in general in our system, we must update the `PATH` environment variable using the following command:
+```bash
+export PATH=<path-to-cirkit>/ext/bin:$PATH`.
+```
+This indicates the system to look for binaries of programs inside the `ext/bin` folder of CirKit's main repository before searching in system folders. 
+
+
 ## Installation in Ubuntu
-The following instructions for installing Revkit in Ubuntu are also included in Cirkit's Github repository. First of all, we need to install the dependencies needed for Revkit using Ubuntu's package manager. The following command must be executed from a terminal:
+
+The following instructions for installing Revkit in Ubuntu are also included in CirKit's Github repository. First of all, we need to install the dependencies needed for Revkit using Ubuntu's package manager. The following command must be executed from a terminal:
+
 ```bash
 sudo apt-get install build-essential git g++ cmake libboost-all-dev libgmp3-dev libxml2-dev zlib1g-dev lapack openblas
 ```
@@ -74,7 +103,7 @@ So solve the **Disk Quota issues**, the first step in the installation is to a f
 ```
 ### Installing dependencies
 
-Due to the high dependencies requirements of Cirkit, it can not be installed easily on a system without having root privileges to update and install all of the dependencies needed. However, it can be installed using a package manager provided with the program. In the following we will list each dependency and its status at the ULeth linux system:
+Due to the high dependencies requirements of Cirkit, it can not be installed easily on a system without having root privileges to update and install all of the dependencies needed. However, it can be installed using the internal package manager. In the following we will list each dependency and its status at the ULeth linux system:
 
 + **git :** included in the linux system and updated.
 + **GNU MP and GMP++ :** included in the linux system and updated.
@@ -85,7 +114,7 @@ Due to the high dependencies requirements of Cirkit, it can not be installed eas
 
 Although it would seem that a simple update made by the system administrator would be enough to be able to install Revkit, Boost and C++ cannot be updated because it generates problems with other programs in the system. 
 
-To install the updated version of the dependencies needed, we must use Cirkit's included package manager. This package manager allows us to install local versions of the needed programs without the use of root privileges. Inside the main directory of the repository, open a terminal and run the following commands:
+Cirkit's included package manager allows us to install local versions of the needed programs without the use of root privileges. Inside the main directory of the repository, open a terminal and run the following commands:
 
 ```bash
  utils/tools.py install boost
