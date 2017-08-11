@@ -129,7 +129,7 @@
 <tbody>
 <tr>
 <td><code>concat</code></td>
-<td>concatenates two circuits in store that are given as arguments with flags <code>--id1</code> and <code>--id2</code> respectively. For example, let circuit in store <code>0</code> be $G_1 \dots G_k$ and circuit in store <code>1</code> be $H_1 \dots H_l$. Executing <code>concat --id1 0 --id2 1</code> overwrites the current pointer of the store with the circuit $G_1 \dots G_k H_1 \dots H_l$.</td>
+<td>concatenates two circuits in store that are given as arguments with flags <code>--id1</code> and <code>--id2</code> respectively. For example, let circuit in store <code>0</code> be <script type="math/tex">G_1 \dots G_k</script> and circuit in store <code>1</code> be <script type="math/tex">H_1 \dots H_l</script>. Executing <code>concat --id1 0 --id2 1</code> overwrites the current pointer of the store with the circuit <script type="math/tex">G_1 \dots G_k H_1 \dots H_l</script>.</td>
 </tr>
 <tr>
 <td><code>filter</code></td>
@@ -165,7 +165,8 @@
 </tr>
 <tr>
 <td><code>reverse</code></td>
-<td>reverse  a circuit. If a circuit is defined by gates $G_1 G_2 \dots G_k$, this command outputs the circuit deffined by $G_k G_{k-1` ... G_1$</td>
+<td>reverse  a circuit. If a circuit is defined by gates <script type="math/tex">G_1 G_2 \dots G_k</script>, this command outputs the circuit deffined by <script type="math/tex">G_k G_{k-1` ... G_1</script>
+</td>
 </tr>
 <tr>
 <td><code>tof</code></td>
@@ -199,7 +200,7 @@
 </tr>
 <tr>
 <td><code>revsim</code></td>
-<td>Simulate the output of $n$-bits for an $n-$line circuit in store. The input bit pattern must be specified by flag <code>-p. --pattern</code> followed by an $n$-bit string.</td>
+<td>Simulate the output of <script type="math/tex">n</script>-bits for an <script type="math/tex">n-</script>line circuit in store. The input bit pattern must be specified by flag <code>-p. --pattern</code> followed by an <script type="math/tex">n</script>-bit string.</td>
 </tr>
 </tbody>
 </table>
@@ -481,5 +482,6 @@ arXiv:1706.02721</p></div>
         <script src="../js/bootstrap-3.0.3.min.js"></script>
         <script src="../js/highlight.pack.js"></script>
         <script src="../js/base.js"></script>
+        <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML"></script>
     </body>
 </html>
