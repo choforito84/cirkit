@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        
+        
+        <link rel="shortcut icon" href="../img/favicon.ico">
+
+	<title>Examples - Revkit user guide</title>
+
+        <link href="../css/bootstrap-3.0.3.min.css" rel="stylesheet">
+        <link href="../css/font-awesome-4.0.3.css" rel="stylesheet">
+        <link rel="stylesheet" href="../css/highlight.css">
+        <link href="../css/base.css" rel="stylesheet">
+
+        <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!--[if lt IE 9]>
+            <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+            <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+        <![endif]-->
+
+        
+    </head>
+
+    <body>
+
+        <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+    <div class="container">
+
+        <!-- Collapsed navigation -->
+        <div class="navbar-header">
+            <!-- Expander button -->
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+
+            <!-- Main title -->
+            <a class="navbar-brand" href="..">Revkit user guide</a>
+        </div>
+
+        <!-- Expanded navigation -->
+        <div class="navbar-collapse collapse">
+            <!-- Main navigation -->
+            <ul class="nav navbar-nav">
+            
+            
+                <li >
+                    <a href="..">Home</a>
+                </li>
+            
+            
+            
+                <li >
+                    <a href="../Basic Usage/">Basic Usage</a>
+                </li>
+            
+            
+            
+                <li class="active">
+                    <a href="./">Examples</a>
+                </li>
+            
+            
+            
+                <li >
+                    <a href="../Reversible Tools/">Reversible Tools</a>
+                </li>
+            
+            
+            </ul>
+
+            <!-- Search, Navigation and Repo links -->
+            <ul class="nav navbar-nav navbar-right">
+                <li >
+                    <a rel="next" href="../Basic Usage/">
+                        <i class="fa fa-arrow-left"></i> Previous
+                    </a>
+                </li>
+                <li >
+                    <a rel="prev" href="../Reversible Tools/">
+                        Next <i class="fa fa-arrow-right"></i>
+                    </a>
+                </li>
+                
+            </ul>
+        </div>
+    </div>
+</div>
+
+        <div class="container">
+            <div class="col-md-3"><div class="bs-sidebar hidden-print affix well" role="complementary">
+    <ul class="nav bs-sidenav">
+    
+        <li class="main active"><a href="#examples">Examples</a></li>
+        
+    
+        <li class="main "><a href="#load-several-data-structures-into-stores-and-print-statistics">Load several data structures into stores and print statistics</a></li>
+        
+    
+        <li class="main "><a href="#making-diagrams">Making diagrams</a></li>
+        
+            <li><a href="#making-diagram-with-qpic">Making diagram with Qpic</a></li>
+        
+            <li><a href="#making-diagram-via-latex">Making diagram via Latex</a></li>
+        
+    
+        <li class="main "><a href="#obtain-truth-table-of-reversible-circuit">Obtain truth table of reversible circuit</a></li>
+        
+    
+        <li class="main "><a href="#synthesize-circuit-from-truth-table-using-transformed-based-synthesis">Synthesize circuit from truth table using Transformed based synthesis</a></li>
+        
+    
+    </ul>
+</div></div>
+            <div class="col-md-9" role="main">
+
+<h2 id="examples">Examples</h2>
+<p>This sections presents several code recipes, along with screen shots of their execution on a terminal, for making some basic work inside Revkit. For all of these instances, we will use Revkit's interactive mode in order to see each command along with its input. </p>
+<p>For the execution of these examples, we will supose that we are working on a directory that has three .real files describing circuits: <code>circuit1.real</code>, <code>circuit2.real</code> and <code>circuit3.real</code>.</p>
+<h2 id="load-several-data-structures-into-stores-and-print-statistics">Load several data structures into stores and print statistics</h2>
+<p>In this example, we will read 3 different circuits into Revkit's circuit store, and we will print their statistics with the <code>ps</code> function and their ASCII representation with the <code>print</code>. The following code shows this proceedure done inside Revkit:</p>
+<pre><code>~$ revkit
+revkit&gt; #read each circuit
+revkit&gt; read_real circuit1.real
+revkit&gt; read_real -n circuit2.real
+revkit&gt; read_real -n circuit3.real
+revkit&gt; #show contents of the circuit store
+revkit&gt; store --show -c
+[i] circuits in store:
+     0: 4 lines, 4 gates
+     1: 5 lines, 5 gates
+  *  2: 3 lines, 5 gates
+revkit&gt; #print ASCII represntation
+revkit&gt; print -c
+―⊕―――――●―⨯―
+―――⊕―――⊕―○―
+―――――⊕―○―⨯―
+
+revkit&gt; #print statistiics
+revkit&gt; ps -c
+Lines:        3
+Gates:        5
+T-count:      7
+Logic qubits: 4
+revkit&gt; #change store pointer
+revkit&gt; current -c 1
+revkit&gt; print -c
+―⨯―――⊕―――●―
+―⨯―――――●―○―
+―――⨯―――――●―
+―●―――――⊕―⨯―
+―○―⨯―――――⨯―
+
+revkit&gt; ps -c
+Lines:        5
+Gates:        5
+T-count:      23
+Logic qubits: 6
+revkit&gt; current -c 0
+revkit&gt; print -c
+―●―――⊕―――
+―――⊕―●―⊕―
+―⨯―――――○―
+―⨯―――●―――
+
+revkit&gt; ps -c
+Lines:        4
+Gates:        4
+T-count:      7
+Logic qubits: 4
+
+
+</code></pre>
+
+<h2 id="making-diagrams">Making diagrams</h2>
+<h3 id="making-diagram-with-qpic">Making diagram with Qpic</h3>
+<p>In this example, we will first read a circuit into Revkit and then export it as a qpic file, then exit Revkit and use Qpic from terminal to convert it to create a PNG image. The following code shows this proceedure done inside Revkit:</p>
+<pre><code>~$ revkit
+revkit&gt; #read circuit
+revkit&gt; read_real circuit1.real
+revkit&gt; print -c
+―●―――⊕―――
+―――⊕―●―⊕―
+―⨯―――――○―
+―⨯―――●―――
+
+revkit&gt; #write qpic file of circuit
+revkit&gt; write_qpic circuit1.qpic
+revkit&gt; quit
+
+~$ #use qpic to convert the circuit to PNG
+~$ qpic circuit1.qpic -f png -o circuit1.png
+</code></pre>
+
+<p>Note that in the <code>qpic</code> command the <code>-f</code> flag indicates output format and <code>-o</code> flag indicates output file name The following picture is the final PNG image made by Qpic, the <code>circuit1.png</code> file.</p>
+<p><center>
+<img src="../pictures/circuit1qpic.png" width=300px>
+</center></p>
+<h3 id="making-diagram-via-latex">Making diagram via Latex</h3>
+<p>In this example we will read a circuit into revkit, export it as a .tikz file and compile it with Pdflatex to produce a PDF drawing of the same. The following code shows this proceedure done inside Revkit:</p>
+<pre><code>~$ revkit
+revkit&gt; read_real circuit1.real
+revkit&gt; print -c
+―●―――⊕―――
+―――⊕―●―⊕―
+―⨯―――――○―
+―⨯―――●―――
+
+revkit&gt; #write .tex file of the circuit ready to compile alone
+revkit&gt; write_tikz --standalone circuit1.tex
+revkit&gt; quit
+~$ #use pdflatex to compile the .tex file and don't print many lines during the process.
+~$ pdflatex -interaction=batchmode circuit1.tex
+</code></pre>
+
+<p>The following picture is the final PDF compiled by Pdflatex.</p>
+<p><center>
+<img src="../pictures/circuit1pdf.png"  width= 300px>
+</center></p>
+<h2 id="obtain-truth-table-of-reversible-circuit">Obtain truth table of reversible circuit</h2>
+<p>In this example we will simulate a reversible circuit to obtain its truth table and then export it as a SPEC file. The following code shows this proceedure done inside Revkit:</p>
+<pre><code>revkit&gt; read_real circuit3.real
+revkit&gt; print -c
+―⊕―――――●―⨯―
+―――⊕―――⊕―○―
+―――――⊕―○―⨯―
+
+revkit&gt; # convert Negative controls to positive controls using NOT gates
+revkit&gt; pos
+revkit&gt; #simulate circuit
+revkit&gt; convert --circuit_to_spec
+revkit&gt; #print truth table on the command line
+revkit&gt; print -s
+000 111
+001 001
+010 101
+011 110
+100 011
+101 010
+110 100
+111 000
+
+revkit&gt; #export truth table to a SPEC file
+revkit&gt; write_spec circuit3.spec
+revkit&gt; quit
+
+</code></pre>
+
+<p>Note that, as commented in the Reversible tools page, it is necessary to use the <code>pos</code> before the <code>convert</code> command to avoid problems. </p>
+<h2 id="synthesize-circuit-from-truth-table-using-transformed-based-synthesis">Synthesize circuit from truth table using Transformed based synthesis</h2>
+<p>In this example, we will use the SPEC file created in the previous example to synthesis a circuit using the <code>tbs</code> example for Transformation based synthesis. The following code shows this proceedure done inside Revkit:</p>
+<pre><code>~$ revkit
+revkit&gt; #read the truth table that we want to convert to synthesis
+revkit&gt; read_spec circuit3.spec
+revkit&gt; print -s
+000 111
+001 001
+010 101
+011 110
+100 011
+101 010
+110 100
+111 000
+
+revkit&gt; #use transformation based synthesis to create a circuit
+revkit&gt; tbs
+[i] run-time: 0.00 secs
+revkit&gt; #print the circuit in the command line
+revkit&gt; print -c
+―⊕―●―●―●―●―⊕―●―●―⊕―⊕―●―●―
+―●―●―⊕―⊕―●―●―⊕―――――――⊕―●―
+―――⊕―●―――⊕―●―●―⊕―●―――――⊕―
+
+revkit&gt; #read the original .real file of the circuit
+revkit&gt; read_real -n circuit3.real
+revkit&gt; # convert negative controls to positive controls and Fredkin to Toffoli for simulation
+revkit&gt; pos
+revkit&gt; tof
+revkit&gt; # simulate both circuits and compare if they are equivalent
+revkit&gt; rec --id1 0 --id2 1
+[i] run-time: 0.00 secs
+[i] circuits are equivalent
+</code></pre></div>
+        </div>
+
+	<footer class="col-md-12">
+		<hr>
+		
+		<p>Documentation built with <a href="http://www.mkdocs.org/">MkDocs</a>.</p>
+	</footer>
+
+
+        <script src="../js/jquery-1.10.2.min.js"></script>
+        <script src="../js/bootstrap-3.0.3.min.js"></script>
+        <script src="../js/highlight.pack.js"></script>
+        <script src="../js/base.js"></script>
+    </body>
+</html>

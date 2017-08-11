@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        
+        
+        <link rel="shortcut icon" href="../img/favicon.ico">
+
+	<title>Reversible Tools - Revkit user guide</title>
+
+        <link href="../css/bootstrap-3.0.3.min.css" rel="stylesheet">
+        <link href="../css/font-awesome-4.0.3.css" rel="stylesheet">
+        <link rel="stylesheet" href="../css/highlight.css">
+        <link href="../css/base.css" rel="stylesheet">
+
+        <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!--[if lt IE 9]>
+            <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+            <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+        <![endif]-->
+
+        
+    </head>
+
+    <body>
+
+        <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+    <div class="container">
+
+        <!-- Collapsed navigation -->
+        <div class="navbar-header">
+            <!-- Expander button -->
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+
+            <!-- Main title -->
+            <a class="navbar-brand" href="..">Revkit user guide</a>
+        </div>
+
+        <!-- Expanded navigation -->
+        <div class="navbar-collapse collapse">
+            <!-- Main navigation -->
+            <ul class="nav navbar-nav">
+            
+            
+                <li >
+                    <a href="..">Home</a>
+                </li>
+            
+            
+            
+                <li >
+                    <a href="../Basic Usage/">Basic Usage</a>
+                </li>
+            
+            
+            
+                <li >
+                    <a href="../Examples/">Examples</a>
+                </li>
+            
+            
+            
+                <li class="active">
+                    <a href="./">Reversible Tools</a>
+                </li>
+            
+            
+            </ul>
+
+            <!-- Search, Navigation and Repo links -->
+            <ul class="nav navbar-nav navbar-right">
+                <li >
+                    <a rel="next" href="../Examples/">
+                        <i class="fa fa-arrow-left"></i> Previous
+                    </a>
+                </li>
+                <li class="disabled">
+                    <a rel="prev" >
+                        Next <i class="fa fa-arrow-right"></i>
+                    </a>
+                </li>
+                
+            </ul>
+        </div>
+    </div>
+</div>
+
+        <div class="container">
+            <div class="col-md-3"><div class="bs-sidebar hidden-print affix well" role="complementary">
+    <ul class="nav bs-sidenav">
+    
+        <li class="main active"><a href="#development-tools">Development tools</a></li>
+        
+            <li><a href="#mapping-and-rewriting">Mapping and rewriting</a></li>
+        
+            <li><a href="#simulation-and-verification">Simulation and verification</a></li>
+        
+            <li><a href="#conversion">Conversion</a></li>
+        
+            <li><a href="#synthesis">Synthesis</a></li>
+        
+            <li><a href="#references">References</a></li>
+        
+    
+    </ul>
+</div></div>
+            <div class="col-md-9" role="main">
+
+<h1 id="development-tools">Development tools</h1>
+<p>This page presents a list of the development related commands of Revkit and their description</p>
+<h2 id="mapping-and-rewriting">Mapping and rewriting</h2>
+<p>Revkit provides us with a set of commands that can modify our reversible circuit in ways that can be helpful to us. Rewriting usually refers to changing the basis of a circuit while mapping refers to changing some elements in a reversible circuit for other. As mentioned before, each of these commands act on the circuit to which the circuit store pointer points to and overwrite this store with the output. In order to add it to the store, you must run the command with the <code>-n</code> flag.</p>
+<p>The following table lists the commands and a basic description of its functions:</p>
+<table>
+<thead>
+<tr>
+<th>Command</th>
+<th>description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>concat</code></td>
+<td>concatenates two circuits in store that are given as arguments with flags <code>--id1</code> and <code>--id2</code> respectively. For example, let circuit in store <code>0</code> be $G_1 \dots G_k$ and circuit in store <code>1</code> be $H_1 \dots H_l$. Executing <code>concat --id1 0 --id2 1</code> overwrites the current pointer of the store with the circuit $G_1 \dots G_k H_1 \dots H_l$.</td>
+</tr>
+<tr>
+<td><code>filter</code></td>
+<td>Removes all gates from a circuit. This command is used to filter out non desired gates. It has a series of flags that indicate what gates to keep:</td>
+</tr>
+<tr>
+<td></td>
+<td><code>-tof</code> keep Toffoli gates</td>
+</tr>
+<tr>
+<td></td>
+<td><code>-stg</code> keep single-target gates</td>
+</tr>
+<tr>
+<td></td>
+<td><code>-inv</code> invert filter</td>
+</tr>
+<tr>
+<td><code>maslov234</code></td>
+<td>Maslov's reversible phase gate mapping. For more intormation, consult <sup><a href="#myfootnote1">1</a></sup></td>
+</tr>
+<tr>
+<td><code>mitm</code></td>
+<td>simple meet-in-the-middle mapping. For more information about the algorithm,  consult <sup><a href="#myfootnote2">2</a></sup></td>
+</tr>
+<tr>
+<td><code>nct</code></td>
+<td>change each gate to its equivalent using the NOT, CNOT and Toffoli gates (NCT)</td>
+</tr>
+<tr>
+<td><code>pos</code></td>
+<td>replace negative controls with equivalent positive controls and NOT gates</td>
+</tr>
+<tr>
+<td><code>reverse</code></td>
+<td>reverse  a circuit. If a circuit is defined by gates $G_1 G_2 \dots G_k$, this command outputs the circuit deffined by $G_k G_{k-1` ... G_1$</td>
+</tr>
+<tr>
+<td><code>tof</code></td>
+<td>rewrite Fredkin gates to Toffoli gates</td>
+</tr>
+<tr>
+<td><code>unique_names</code></td>
+<td>changes the variable names of inputs, outputs. garbage and constants of the circuit as specified by it REAL file so that all the names are unique.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="simulation-and-verification">Simulation and verification</h2>
+<p>Revkit allows us to simulate a reversible circuit, that is, to verify and test its output for a certain input. We will discuss the commands that allow us to do that and how to use them. </p>
+<p>Before continuing, it must be noticed that most Revkit's commands for simulation and verification, including the <code>convert</code> command, which will be discussed in the following, throw errors when are called upon a circuit that has negative controls. It also can throw errors when the circuits are not based on Tofolli gates. For this reason, we strongly recommend to call the <code>pos</code> and <code>nct</code> commands on every circuit each time one wants to simulate a circuit.</p>
+<p>The following table lists all the simulation commands of Revkit, along with a short description.</p>
+<table>
+<thead>
+<tr>
+<th>command</th>
+<th>description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>is_identity</code></td>
+<td>Checks if circuit in store computes the identity function.</td>
+</tr>
+<tr>
+<td><code>rec</code></td>
+<td>Equivalence checking for two circuits on store. The location in store of the circuits is given as arguments with flags <code>--id1</code> and <code>--id2</code> respectively. In order to use this command, the <strong>cryptominisat</strong> program must be installed and its executable must be added to the PATH variable. This can be done using CirKIt's package manager</td>
+</tr>
+<tr>
+<td><code>revsim</code></td>
+<td>Simulate the output of $n$-bits for an $n-$line circuit in store. The input bit pattern must be specified by flag <code>-p. --pattern</code> followed by an $n$-bit string.</td>
+</tr>
+</tbody>
+</table>
+<p>If, instead of simulating one input pattern using the <code>revsim</code> command, one wants to obtain the full truth table the reversible circuit, the <code>convert</code> command must be used. This command is discussed in the following section. </p>
+<p>There are also a series of commands related to the optimization of reversible circuits implemented in Revkit. In a similar fashion of the simulation commands, each of these commands act over the circuit in the store to which the store pointer points to. The following table lists all the optimization commands in Revkit along with a short description.</p>
+<table>
+<thead>
+<tr>
+<th>Command</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>adding_lines</code></td>
+<td>optimization method that tries to reduce the quantum cost of a circuit by adding garbage lines to it. For a more detailed description of the method, consult <sup><a href="#myfootnote3">3</a> </sup></td>
+</tr>
+<tr>
+<td><code>esop</code></td>
+<td>outputs a PLA file, an exclusive sum of products representation, from an and-inverter graph in store. The file name of the output must be specified in the command with the <code>--filename</code> flag. It optimizes the output using an EXORCISM algorithm. For a larger explanation of these minimization algorithms, please consult <sup><a href="#myfootnote4">4</a> </sup>.</td>
+</tr>
+<tr>
+<td><code>reduce_lines</code></td>
+<td>optimization method that tries to reduce the number of lines in a circuit by merging garbage and constant lines, or garbage and garbage lines. For a more detailed description of the method, consult <sup><a href="#myfootnote5">5</a> </sup>.</td>
+</tr>
+<tr>
+<td><code>revsimp</code></td>
+<td>optimization tool that uses several methods, which include canclation of adjacent not gates, merging of Toffoli gates with same targets (similar to template matching) and re-synthesis of gates using EXORCISM, among others. The . If called with the <code>-v, --verbose</code> flag, the process is detailed on screen.</td>
+</tr>
+<tr>
+<td><code>tpar</code></td>
+<td>polynomial-time algorithm for optimizing quantum circuits that takes the actual implementation of fault-tolerant logical gates into consideration. To run this command, the <code>tpar</code> package must be installed using Cirkit's package manager. For a more detailed description of this method, consult <sup><a href="#myfootnote6">6</a> </sup>.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="conversion">Conversion</h2>
+<p>It is possible to convert compatible data structures from one to other. The <code>convert</code> command allows us to convert one data structure to another. The command needs to have specified as flag the input and output conversion data structures. After specifying this flag, the command takes as an input the pointer in the input data structure store. The output data structure is written to a new element of the output data structure store by default.</p>
+<p>The following table lists of all the possible conversions that can be done with the <code>convert</code> command, along with its flags.</p>
+<table>
+<thead>
+<tr>
+<th>Input</th>
+<th align="center">Output</th>
+<th>Flag</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Reversible circuit</td>
+<td align="center">Aid-inverter graph</td>
+<td><code>--circuit_to_aig</code></td>
+</tr>
+<tr>
+<td>Reversible circuit</td>
+<td align="center">BDD of a characteristic reversible function</td>
+<td><code>--circuit_to_rcbdd</code></td>
+</tr>
+<tr>
+<td>Reversible circuit</td>
+<td align="center">Reversible specification</td>
+<td><code>--circuit_to_spec</code></td>
+</tr>
+<tr>
+<td>Aid-inverter graph</td>
+<td align="center">XOR majority graph</td>
+<td><code>--aig_to_xmg</code></td>
+</tr>
+<tr>
+<td>Aid-inverter graph</td>
+<td align="center">Binary decision diagram</td>
+<td><code>--aig_to_bdd</code></td>
+</tr>
+<tr>
+<td>Expression</td>
+<td align="center">XOR majority graph</td>
+<td><code>--expr_to_xmg</code></td>
+</tr>
+<tr>
+<td>Expression</td>
+<td align="center">Binary decision diagram</td>
+<td><code>--expr_to_bdd</code></td>
+</tr>
+<tr>
+<td>Expression</td>
+<td align="center">Reversible specification</td>
+<td><code>--expr_to_spec</code></td>
+</tr>
+<tr>
+<td>XOR majority graph</td>
+<td align="center">Expression</td>
+<td><code>--xmg_to_expr</code></td>
+</tr>
+<tr>
+<td>XOR majority graph</td>
+<td align="center">Aid-inverter graph</td>
+<td><code>--xmg_to_aig</code></td>
+</tr>
+</tbody>
+</table>
+<p>In particular, the <code>--circuit_to_spec</code> flag is particularly useful, because it allows us to simulate all the outcomes of a reversible circuit, that is, to obtain the truth table of a reversible circuit. The inverse process, to design a reversible circuit that has a determined truth table, is discussed in the following section.</p>
+<h2 id="synthesis">Synthesis</h2>
+<p>In traditional and reversible logic, circuit synthesis, or simply synthesis, is the process of designing a circuit that computes a desired Boolean function, i. e. that matches a given and arbitrary truth table. As this process is fundamental for the physical implementation of a digital circuit, synthesis is a very important task that can be made in very different ways in order to optimize or achieve certain desired results. </p>
+<p>Most of the reversible logic synthesis algorithms included in Revkit are too complex (most of them have a complete paper describing them) to be explained fully on here, so each one is referenced to its original source. A good resource for more information on each command is also found in Mathias Soeken's review of the <a href="https://github.com/msoeken/reversible-sota">state of the art in reversible logic synthesis</a></p>
+<p>The following table lists all of the synthesis commands in Revkit. Most of them need different data structures in store as input in order to perform the synthesis. They take as an input the pointer of the input data structure store. All of them can be called with the <code>-v, --verbose</code> flag so that it outputs more information over each step of the algorithm. </p>
+<table>
+<thead>
+<tr>
+<th align="center">Command</th>
+<th>Input</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="center"><code>cbs</code></td>
+<td>And-inverter graph</td>
+<td>Circuit based synthesis. For more information about the algorithm, consult <sup> <a href="#myfootnote7">7</a> </sup></td>
+</tr>
+<tr>
+<td align="center"><code>dbs</code></td>
+<td>Reversible specification</td>
+<td>Decomposition based synthesis. For more information about the algorithm,  consult <sup> <a href="#myfootnote8">8</a> </sup> <sup> <a href="#myfootnote9">9</a> </sup></td>
+</tr>
+<tr>
+<td align="center"><code>rms</code></td>
+<td>Reversible specification</td>
+<td>Reed-Muller spectra-based synthesis. For more information about the algorithm,  consult <sup> <a href="#myfootnote10">10</a> </sup></td>
+</tr>
+<tr>
+<td align="center"><code>tbs</code></td>
+<td>Reversible specification</td>
+<td>Transformation based synthesis. For more information about the algorithm,  consult <sup> <a href="#myfootnote11">11</a> </sup></td>
+</tr>
+<tr>
+<td align="center"><code>qbs</code></td>
+<td>BDD of a characteristic reverible function</td>
+<td>Quantum  Multiple-valued  Decision Diagrams based synthesis. For more information about the algorithm,  consult <sup> <a href="#myfootnote12">12</a> </sup></td>
+</tr>
+<tr>
+<td align="center"><code>exs</code></td>
+<td>Reversible specification</td>
+<td>synthesizes a minimal circuit (with respect to the number of gates) using the SAT-basedexact synthesis approach. For more information about the algorithm,  consult <sup> <a href="#myfootnote13">13</a> </sup>.</td>
+</tr>
+<tr>
+<td align="center"><code>esopbs</code></td>
+<td>-</td>
+<td>ESOP-based synthesis. It takes as an input a BDD represented by a PLA file. The <code>--filename</code> argument indicates the path of the file. For more information about the algorithm,  consult <sup> <a href="#myfootnote14">14</a> </sup></td>
+</tr>
+<tr>
+<td align="center"><code>lhrs</code></td>
+<td>And-inverter graph</td>
+<td>Look-up table (LUT) based hierarchical reversible synthesis. Fore more information, consult <sup> <a href="#myfootnote15">15</a> </sup> <sup> <a href="#myfootnote16">16</a> </sup></td>
+</tr>
+<tr>
+<td align="center"><code>dxs</code></td>
+<td>XOR majority graph</td>
+<td>Direct XOR majority graph synthesis</td>
+</tr>
+</tbody>
+</table>
+<h2 id="references">References</h2>
+<p><a name="myfootnote1">1  </a>  Maslov, D.  <em>On  the  advantages  of  using  relative  phase  Toffolis  with  an  application  to  multiple  control  Toffoli
+optimization</em>. In: (2015).
+doi
+:
+10.1103/PhysRevA.93.022311
+. eprint:
+arXiv:1508.03273.</p>
+<p><a name="myfootnote2">2  </a>   Amy, M. et al. <em>A Meet-in-the-Middle Algorithm for Fast Synthesis of Depth-Optimal Quantum Circuits</em>. In:
+IEEE
+Transactions on Computer-Aided Design of Integrated Circuits and Systems
+32.6 (June 2013), pp. 818–830.
+issn
+: 0278-
+0070.
+doi
+:
+10.1109/TCAD.2013.2244643</p>
+<p><a name="myfootnote3">3  </a> Abdessaied, N. et al. <em>Reducing the Depth of Quantum Circuits Using Additional Circuit Lines</em>. In:
+Reversible
+Computation:  5th  International  Conference,  RC  2013,  Victoria,  BC,  Canada,  July  4-5,  2013.  Proceedings
+.  Berlin,
+Heidelberg: Springer Berlin Heidelberg, 2013, pp. 221–233.</p>
+<p><a name="myfootnote4">4  </a> Perkowski, M. and Mishchenko, A. . <em>Fast Heuristic Minimization of Exclusive-Sums-of-Products</em>. In:
+Proceedings of the
+RM’2001 Workshop
+. DAC ’10. 2001</p>
+<p><a name="myfootnote5">5 </a>    Wille, R. ; Soeken, M. and Drechsler, R. . <em>Reducing the Number of Lines in Reversible Circuits</em>. In:
+Proceedings of the 47th Design Automation Conference
+. DAC ’10. Anaheim, California: ACM, 2010, pp. 647–652</p>
+<p><a name="myfootnote6">6 </a>  Amy, M.; Maslov, D. and Mosca, M. . <em>Polynomial-time T-depth Optimization of Clifford+T circuits via
+Matroid Partitioning</em>. In: (2013).
+doi
+:
+10.1109/TCAD.2014.2341953
+. eprint:
+arXiv:1303.2042</p>
+<p><a name="myfootnote7">7 </a>  Soeken, M.  and Chattopadhyay,  A. . <em>Unlocking Efficiency and Scalability of Reversible Logic Synthesis Using Conventional Logic Synthesis</em>. In:
+Proceedings  of  the  53rd  Annual  Design  Automation  Conference
+. DAC ’16. Austin,
+Texas: ACM, 2016, 149:1–149:6</p>
+<p><a name="myfootnote8">8 </a>De Vos, A. and Van Rentergem, Y. . <em>Young subgroups for reversible computers</em>. In:
+Advances in Mathematics of
+Communications
+2.2 (2008), pp. 183–200.
+doi
+:
+10.3934/amc.2008.2.183</p>
+<p><a name="myfootnote9">9 </a> Soeken, M et al. <em>Ancilla-free synthesis of large reversible functions using binary decision diagrams</em>. In:
+Journal
+of Symbolic Computation
+73 (2016), pp. 1–26</p>
+<p><a name="myfootnote10">10 </a> Maslov, D. ; Dueck, G. and Miller, M. . <em>Techniques for the Synthesis of Reversible Toffoli Networks</em>. In:
+ACM
+Trans. Des. Autom. Electron. Syst.
+12.4 (Sept. 2007).
+doi
+:
+10.1145/1278349.1278355</p>
+<p><a name="myfootnote11">11 </a>  Miller, M. ; Maslov, D.  and Gerhard Dueck, G. . <em>A Transformation Based Algorithm for Reversible Logic
+Synthesis</em>. In:
+Proceedings  of  the  40th  Annual  Design  Automation  Conference
+. DAC ’03. Anaheim, CA, USA: ACM,
+2003, pp. 318–323.
+doi
+:
+10.1145/775832.775915
+.</p>
+<p><a name="myfootnote12">12 </a> Miller, D.  and  Thornton, M. .  <em>QMDD:  A  Decision  Diagram  Structure  for  Reversible  and  Quantum Circuits</em>. In: Proceedings of the 36th International Symposium on Multiple-Valued Logic
+. ISMVL ’06. Washington, DC,
+USA: IEEE Computer Society, 2006, pp. 30–.
+isbn
+: 0-7695-2532-6.
+doi
+:
+10.1109/ISMVL.2006.35
+.</p>
+<p><a name="myfootnote13">13 </a> Groβe, D.  Et al.
+. <em>Exact Multiple-control Toffoli Network Synthesis with SAT Techniques</em>. In:
+Trans. Comp.-Aided
+Des. Integ. Cir. Sys.
+28.5 (May 2009), pp. 703–715.
+doi
+:
+10.1109/TCAD.2009.2017215</p>
+<p><a name="myfootnote14">14 </a>Fazel, K ; Thornton, M. and Rice, R. . <em>ESOP-based Toffoli Gate Cascade Generation</em> . In:
+2007 IEEE Pacific Rim
+Conference  on  Communications,  Computers  and  Signal  Processing
+. Aug. 2007, pp. 206–209.
+doi
+:
+10.1109/PACRIM.
+2007.4313212
+.</p>
+<p><a name="myfootnote15">15 </a> Soeken, M. et al. <em>Hierarchical Reversible Logic Synthesis Using LUTs</em> . In:
+Proceedings of the 54th Annual Design
+Automation  Conference  2017
+. ACM, 2017, 78:1–78:6.
+isbn
+: 978-1-4503-4927-7.
+doi
+:
+10.
+1145/3061639.3062261</p>
+<p><a name="myfootnote16">16 </a>Soeken, M. et al.
+<em>Logic Synthesis for Quantum Computing</em>
+. 2017. eprint:
+arXiv:1706.02721</p></div>
+        </div>
+
+	<footer class="col-md-12">
+		<hr>
+		
+		<p>Documentation built with <a href="http://www.mkdocs.org/">MkDocs</a>.</p>
+	</footer>
+
+
+        <script src="../js/jquery-1.10.2.min.js"></script>
+        <script src="../js/bootstrap-3.0.3.min.js"></script>
+        <script src="../js/highlight.pack.js"></script>
+        <script src="../js/base.js"></script>
+    </body>
+</html>
