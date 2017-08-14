@@ -1,0 +1,479 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Getting started &mdash; CirKit  documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="genindex.html"/>
+        <link rel="search" title="Search" href="search.html"/>
+    <link rel="top" title="CirKit  documentation" href="index.html"/>
+        <link rel="next" title="Data Structures" href="data_structures.html"/>
+        <link rel="prev" title="Welcome to CirKit’s documentation!" href="index.html"/> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> CirKit
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Getting started</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#running-cirkit">Running CirKit</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#stores">Stores</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#example">Example</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#logging">Logging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#aliases">Aliases</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="data_structures.html">Data Structures</a></li>
+<li class="toctree-l1"><a class="reference internal" href="integration.html">Integration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="revkit.html">RevKit</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">CirKit</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>Getting started</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/getting_started.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="getting-started">
+<h1>Getting started<a class="headerlink" href="#getting-started" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="running-cirkit">
+<h2>Running CirKit<a class="headerlink" href="#running-cirkit" title="Permalink to this headline">¶</a></h2>
+<p>CirKit has a command-line interface. After calling
+<em>build/programs/cirkit</em> a shell prompt is printed to the screen. In
+order to see all available commands type <code class="docutils literal"><span class="pre">help</span></code> . This prints a list
+with all commands together with a short description for each of
+them. To see more details about a command and its usage call the
+command together with the <code class="docutils literal"><span class="pre">-h</span></code> flag. For example <code class="docutils literal"><span class="pre">read_aiger</span> <span class="pre">-h</span></code>
+prints options to read an AIGER file.</p>
+<p>CirKit can be called in three different modes:</p>
+<ol class="arabic">
+<li><p class="first"><strong>Interactive mode:</strong> This is the default interactive mode that is
+described above.</p>
+</li>
+<li><p class="first"><strong>Bash mode:</strong> <code class="docutils literal"><span class="pre">-c</span></code> In this mode, commands are given to CirKit as
+command line arguments, e.g.,:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">build</span><span class="o">/</span><span class="n">programs</span><span class="o">/</span><span class="n">cirkit</span> <span class="o">-</span><span class="n">c</span> <span class="s2">&quot;read_aiger file.aig; cone -o y; simulate -at; quit&quot;</span>
+</pre></div>
+</div>
+<p>This example reads an AIGER from <em>file.aig</em>, reduces the network to
+the cone of output <em>y</em>, simulates the resulting network as truth
+table and quits. By adding the flag <code class="docutils literal"><span class="pre">-e</span></code> additionally each
+command is printed to the screen before execution, e.g.,:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">build</span><span class="o">/</span><span class="n">programs</span><span class="o">/</span><span class="n">cirkit</span> <span class="o">-</span><span class="n">ec</span> <span class="s2">&quot;read_aiger file.aig; cone -o y; simulate -at; quit&quot;</span>
+</pre></div>
+</div>
+<p>Note that single character command options (that start eith with a
+single <code class="docutils literal"><span class="pre">-</span></code>) can be concatenated, e.g., <code class="docutils literal"><span class="pre">-e</span> <span class="pre">-c</span></code> can be written
+as <code class="docutils literal"><span class="pre">-ec</span></code>.</p>
+</li>
+<li><p class="first"><strong>Batch mode:</strong> <code class="docutils literal"><span class="pre">-f</span></code> In this mode, commands are read line-by-line
+from a file, e.g.,:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">build</span><span class="o">/</span><span class="n">programs</span><span class="o">/</span><span class="n">cirkit</span> <span class="o">-</span><span class="n">f</span> <span class="n">command_file</span>
+</pre></div>
+</div>
+<p>This mode also accepts the <code class="docutils literal"><span class="pre">-e</span></code> flag to print each command before
+execution. It is possible to comment some commands in the command
+file by starting a line with a <code class="docutils literal"><span class="pre">#</span></code> character.</p>
+</li>
+</ol>
+<p>Some of the main commands are:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="22%" />
+<col width="78%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Command</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">alias</span></code></td>
+<td>Creates an alias</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">help</span></code></td>
+<td>Shows all available commands</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">quit</span></code></td>
+<td>Quits CirKit</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">set</span></code></td>
+<td>Sets (internal) environment variables</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="stores">
+<h2>Stores<a class="headerlink" href="#stores" title="Permalink to this headline">¶</a></h2>
+<p>Shared data in CirKit such as circuits or truth tables are stored in
+<em>stores</em> and commands can access the data from them. Each data
+structure has its own store and each store can hold more than one
+element. For example, there are seperate stores for truth table, AIGs,
+and BDDs. Call <code class="docutils literal"><span class="pre">store</span> <span class="pre">-h</span></code> to see all available stores. Each store
+comes with its own <em>command flag</em> to access it, e.g., <code class="docutils literal"><span class="pre">-a</span></code> for AIGs
+and <code class="docutils literal"><span class="pre">-t</span></code> for truth tables. Although a store can hold more than one
+element, it is not necessary and possible to specify which store
+element to access. Instead each store indivually has a pointer to the
+<em>current store element</em> and commands always access this one. In order
+to access a different store element, one can change the pointer using
+the command <code class="docutils literal"><span class="pre">current</span></code>. For example, <code class="docutils literal"><span class="pre">current</span> <span class="pre">-a</span> <span class="pre">1</span></code> will set the
+pointer in the AIG store to the element with index 1 (which is the
+second element in the store).</p>
+<div class="section" id="example">
+<h3>Example<a class="headerlink" href="#example" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">read_aiger</span> <span class="n">file1</span><span class="o">.</span><span class="n">aig</span>
+<span class="n">read_aiger</span> <span class="n">file2</span><span class="o">.</span><span class="n">aig</span>
+<span class="n">store</span> <span class="o">--</span><span class="n">show</span> <span class="o">-</span><span class="n">a</span>
+<span class="n">read_aiger</span> <span class="o">-</span><span class="n">n</span> <span class="n">file3</span><span class="o">.</span><span class="n">aig</span>
+<span class="n">store</span> <span class="o">--</span><span class="n">show</span> <span class="o">-</span><span class="n">a</span>
+<span class="n">current</span> <span class="o">-</span><span class="n">a</span> <span class="mi">0</span>
+<span class="n">store</span> <span class="o">--</span><span class="n">clear</span> <span class="o">-</span><span class="n">a</span>
+</pre></div>
+</div>
+<p>First <em>file1.aig</em> is read into the AIG store. The second command reads
+<em>file2.aig</em> and <strong>overrides</strong> the current entry. Overriding the
+current store element is the default behavior of most commands. The
+current content of a store can be displayed with <code class="docutils literal"><span class="pre">store</span> <span class="pre">--show</span> <span class="pre">-a</span></code>
+or <code class="docutils literal"><span class="pre">store</span> <span class="pre">-a</span></code> as a short-hand. In the third line of the example, one
+AIG is in the store. When passing the flag <code class="docutils literal"><span class="pre">-n</span></code> to <code class="docutils literal"><span class="pre">read_aiger</span></code> as
+in the fourth command a new entry is added to the store and the
+current index is updated to the new entry, i.e., at this time the AIG
+store contains two elements with the current element being the second
+one (index 1). With <code class="docutils literal"><span class="pre">current</span> <span class="pre">-a</span> <span class="pre">0</span></code> the current index is reset to 0
+and <code class="docutils literal"><span class="pre">store</span> <span class="pre">--clear</span> <span class="pre">-a</span></code> clears the store from all AIGs.</p>
+<p>For many commands it is clear which store they access and it’s not
+necessary to specify the store. There are some generic commands which
+work on all data structures and require to pass the store access flag,
+e.g., the command <code class="docutils literal"><span class="pre">store</span></code>. The generic commands are:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="16%" />
+<col width="84%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Command</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">convert</span></code></td>
+<td>Converts store elements into other types, e.g., AIGs to BDDs</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">current</span></code></td>
+<td>Changes the current store pointer</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">print</span></code></td>
+<td>Prints a textual ASCII representation of the current store element</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">ps</span></code></td>
+<td>Prints statistical information about the current store element</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">show</span></code></td>
+<td>Visualizes the current store element (writes to a <em>dot</em> file)</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">store</span></code></td>
+<td>Shows and clears elements from the store</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="section" id="logging">
+<h2>Logging<a class="headerlink" href="#logging" title="Permalink to this headline">¶</a></h2>
+<p>Passing <code class="docutils literal"><span class="pre">-l</span> <span class="pre">file.log</span></code> to cirkit creates a log file of the
+session. This option is particularly useful in batch mode. The log
+file contains a JSON array with an entry for each command. Each entry
+contains at least the full command that was run and the time at which
+the command was started to execute. Some commands write additional
+data into the log file. For example, <code class="docutils literal"><span class="pre">ps</span> <span class="pre">-a</span></code> writes number of
+inputs, outputs, and AND gates of an AIG, and <code class="docutils literal"><span class="pre">quit</span></code> writes several
+information about the computer on which CirKit has been
+executed. Being a JSON array, the log file can be easily parsed as
+many programming languages have a JSON library.</p>
+<p>Some helper functions to parse the log file and, e.g., create ASCII
+tables from them can be found in <em>utils/experiments.py</em>. Further, the
+Python program <em>utils/extract_script.py</em> extracts a CirKit script file
+from the the log that can be run in batch mode. This can be helpful
+when logging an interactive session and then rerunning the commands:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>$ cirkit -l session.log
+cirkit&gt; read_aiger file.aig
+cirkit&gt; ps -a
+...
+cirkit&gt; quit
+$ utils/extract_script.py session.log &gt; session.cs
+$ cirkit -f session.cs
+</pre></div>
+</div>
+<p>For performing experimental evaluations, the following workflow is
+suggested. Create two Python programs (or any other programming
+language) called <em>make_script.py</em> and <em>make_table.py</em>. The program
+<em>make_script.py</em> writes a CirKit script. The program <em>make_table.py</em>
+reads the log file created for the script and prints out a table:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>$ ./make_script.cs experiments.cs
+$ cirkit -f experiments.cs -l experiments.log
+$ ./make_table.cs experiments.log
+</pre></div>
+</div>
+</div>
+<div class="section" id="aliases">
+<h2>Aliases<a class="headerlink" href="#aliases" title="Permalink to this headline">¶</a></h2>
+<p>The command <code class="docutils literal"><span class="pre">alias</span></code> allows to create aliases, which are shortcuts to
+commands or sequences of commands. The best place for aliass is the
+init file <em>alias</em> located in the directory that is specified in the
+<code class="docutils literal"><span class="pre">$CIRKIT_HOME</span></code> environment variable. It is recommended to set
+<code class="docutils literal"><span class="pre">$CIRKIT_HOME</span></code> to the root directory of CirKit. Examples for entries
+in an alias file are::</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">alias</span> <span class="n">e2t</span> <span class="s2">&quot;convert --expr_to_tt&quot;</span>
+</pre></div>
+</div>
+<p>The alias command gets two arguments, the <em>key</em> and the <em>value</em> that
+is used for substituion. If the key or the value contain a space they
+need to be put into quotes, and internal quotes need to be escaped.</p>
+<p>Note that they key can be any regular expression with capture groups
+and that the value is a formatted string that can contain placeholders
+for each capture string: <code class="docutils literal"><span class="pre">%1%</span></code> for the first capture group, <code class="docutils literal"><span class="pre">%2%</span></code>
+for the second one and so on. Note that the <code class="docutils literal"><span class="pre">%</span></code> sign needs to be
+escaped. A more complex example is an alias to read a Verilog file
+into an AIG using ABC::</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">alias</span> <span class="s2">&quot;abc_verilog (.*)&quot;</span> <span class="s2">&quot;abc -c </span><span class="se">\&quot;</span><span class="si">%%</span><span class="s2">read </span><span class="si">%1%</span><span class="s2">; </span><span class="si">%%</span><span class="s2">blast</span><span class="se">\&quot;</span><span class="s2">&quot;</span>
+</pre></div>
+</div>
+<p>This will translate, e.g., the command <code class="docutils literal"><span class="pre">abc_verilog</span> <span class="pre">file.v</span></code> into:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">abc</span> <span class="o">-</span><span class="n">c</span> <span class="s2">&quot;</span><span class="si">%r</span><span class="s2">ead file.v; %blast&quot;</span>
+</pre></div>
+</div>
+<p>Since the key is any regular expression, we can create aliases which
+are very expressive. The alias:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">alias</span> <span class="s2">&quot;(</span><span class="se">\\</span><span class="s2">w+) &gt; (</span><span class="se">\\</span><span class="s2">w+)&quot;</span> <span class="s2">&quot;convert --</span><span class="si">%1%</span><span class="s2">_to_</span><span class="si">%2%</span><span class="s2">&quot;</span>
+</pre></div>
+</div>
+<p>allows, e.g., to convert a truth table into an AIG using <code class="docutils literal"><span class="pre">tt</span> <span class="pre">&gt;</span>
+<span class="pre">aig</span></code>. Putting everything together we can write scripts in CirKit such
+as:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">abc_verilog</span> <span class="n">file</span><span class="o">.</span><span class="n">v</span>
+<span class="n">aig</span> <span class="o">&gt;</span> <span class="n">bdd</span>
+<span class="n">bdd</span> <span class="o">-</span><span class="n">c</span>
+</pre></div>
+</div>
+<p>which reads a Verilog file into a CirKit AIG using ABC’s API, then
+converts the AIG into a BDD and finally computes the characteristic
+function of the BDD.</p>
+<p>Aliases are also useful inside scripts when they are only required
+locally. Consider, e.g., one wants to convert several truth tables
+into AIGs, optimize them, and then write them into a file. A script
+for this task could look as follows:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">alias</span> <span class="s2">&quot;tt_aig_prog ([01]+)&quot;</span> <span class="s2">&quot;tt </span><span class="si">%1%</span><span class="s2">; tt &gt; aig; abc -c &amp;dc2; ps -a; write_aiger </span><span class="si">%1%</span><span class="s2">.aag&quot;</span>
+<span class="n">tt_aig_prog</span> <span class="mi">11101000</span>
+<span class="n">tt_aig_prog</span> <span class="mi">01011101</span>
+<span class="n">tt_aig_prog</span> <span class="mi">0110</span>
+<span class="n">tt_aig_prog</span> <span class="mi">1001100111010111</span>
+<span class="n">tt_aig_prog</span> <span class="mi">1101110011000000</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="data_structures.html" class="btn btn-neutral float-right" title="Data Structures" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="index.html" class="btn btn-neutral" title="Welcome to CirKit’s documentation!" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017, Mathias Soeken.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>
