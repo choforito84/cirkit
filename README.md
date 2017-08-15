@@ -17,7 +17,7 @@ The following software is required in order to build CirKit
 
 In *Ubuntu* the packages can be installed with
 
-    sudo apt-get install build-essential git g++ cmake libboost-all-dev libgmp3-dev libxml2-dev zlib1g-dev lapack openblas
+    sudo apt-get install build-essential git g++ cmake libboost-all-dev libgmp3-dev libxml2-dev zlib1g-dev liblapack-dev libblas-dev
 
 In *arch* the packages can be installed with
 
