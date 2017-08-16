@@ -125,7 +125,7 @@
 <p>For the execution of these examples, we will supose that we are working on a directory that has three .real files describing circuits: <code>circuit1.real</code>, <code>circuit2.real</code> and <code>circuit3.real</code>.</p>
 <h2 id="load-several-data-structures-into-stores-and-print-statistics">Load several data structures into stores and print statistics</h2>
 <p>In this example, we will read 3 different circuits into Revkit's circuit store, and we will print their statistics with the <code>ps</code> function and their ASCII representation with the <code>print</code>. The following code shows this proceedure done inside Revkit:</p>
-<pre class="codehilite"><code>~$ revkit
+<div class="codehilite"><pre><span></span>~$ revkit
 revkit&gt; #read each circuit
 revkit&gt; read_real circuit1.real
 revkit&gt; read_real -n circuit2.real
@@ -173,13 +173,14 @@ revkit&gt; ps -c
 Lines:        4
 Gates:        4
 T-count:      7
-Logic qubits: 4</code></pre>
+Logic qubits: 4
+</pre></div>
 
 
 <h2 id="making-diagrams">Making diagrams</h2>
 <h3 id="making-diagram-with-qpic">Making diagram with Qpic</h3>
 <p>In this example, we will first read a circuit into Revkit and then export it as a qpic file, then exit Revkit and use Qpic from terminal to convert it to create a PNG image. The following code shows this proceedure done inside Revkit:</p>
-<pre class="codehilite"><code>~$ revkit
+<div class="codehilite"><pre><span></span>~$ revkit
 revkit&gt; #read circuit
 revkit&gt; read_real circuit1.real
 revkit&gt; print -c
@@ -193,7 +194,8 @@ revkit&gt; write_qpic circuit1.qpic
 revkit&gt; quit
 
 ~$ #use qpic to convert the circuit to PNG
-~$ qpic circuit1.qpic -f png -o circuit1.png</code></pre>
+~$ qpic circuit1.qpic -f png -o circuit1.png
+</pre></div>
 
 
 <p>Note that in the <code>qpic</code> command the <code>-f</code> flag indicates output format and <code>-o</code> flag indicates output file name The following picture is the final PNG image made by Qpic, the <code>circuit1.png</code> file.</p>
@@ -202,7 +204,7 @@ revkit&gt; quit
 </center></p>
 <h3 id="making-diagram-via-latex">Making diagram via Latex</h3>
 <p>In this example we will read a circuit into revkit, export it as a .tikz file and compile it with Pdflatex to produce a PDF drawing of the same. The following code shows this proceedure done inside Revkit:</p>
-<pre class="codehilite"><code>~$ revkit
+<div class="codehilite"><pre><span></span>~$ revkit
 revkit&gt; read_real circuit1.real
 revkit&gt; print -c
 ―●―――⊕―――
@@ -213,8 +215,9 @@ revkit&gt; print -c
 revkit&gt; #write .tex file of the circuit ready to compile alone
 revkit&gt; write_tikz --standalone circuit1.tex
 revkit&gt; quit
-~$ #use pdflatex to compile the .tex file and don't print many lines during the process.
-~$ pdflatex -interaction=batchmode circuit1.tex</code></pre>
+~$ #use pdflatex to compile the .tex file and don&#39;t print many lines during the process.
+~$ pdflatex -interaction=batchmode circuit1.tex
+</pre></div>
 
 
 <p>The following picture is the final PDF compiled by Pdflatex.</p>
@@ -223,7 +226,7 @@ revkit&gt; quit
 </center></p>
 <h2 id="obtain-truth-table-of-reversible-circuit">Obtain truth table of reversible circuit</h2>
 <p>In this example we will simulate a reversible circuit to obtain its truth table and then export it as a SPEC file. The following code shows this proceedure done inside Revkit:</p>
-<pre class="codehilite"><code>revkit&gt; read_real circuit3.real
+<div class="codehilite"><pre><span></span>revkit&gt; read_real circuit3.real
 revkit&gt; print -c
 ―⊕―――――●―⨯―
 ―――⊕―――⊕―○―
@@ -246,13 +249,14 @@ revkit&gt; print -s
 
 revkit&gt; #export truth table to a SPEC file
 revkit&gt; write_spec circuit3.spec
-revkit&gt; quit</code></pre>
+revkit&gt; quit
+</pre></div>
 
 
 <p>Note that, as commented in the Reversible tools page, it is necessary to use the <code>pos</code> before the <code>convert</code> command to avoid problems. </p>
 <h2 id="synthesize-circuit-from-truth-table-using-transformed-based-synthesis">Synthesize circuit from truth table using Transformed based synthesis</h2>
 <p>In this example, we will use the SPEC file created in the previous example to synthesis a circuit using the <code>tbs</code> example for Transformation based synthesis. The following code shows this proceedure done inside Revkit:</p>
-<pre class="codehilite"><code>~$ revkit
+<div class="codehilite"><pre><span></span>~$ revkit
 revkit&gt; #read the truth table that we want to convert to synthesis
 revkit&gt; read_spec circuit3.spec
 revkit&gt; print -s
@@ -282,7 +286,8 @@ revkit&gt; tof
 revkit&gt; # simulate both circuits and compare if they are equivalent
 revkit&gt; rec --id1 0 --id2 1
 [i] run-time: 0.00 secs
-[i] circuits are equivalent</code></pre></div>
+[i] circuits are equivalent
+</pre></div></div>
         </div>
 
 	<footer class="col-md-12">

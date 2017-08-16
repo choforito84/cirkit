@@ -123,59 +123,87 @@
 <p>Revkit is a command line based program, so it does not have a graphical user interface. When Revkit is executed from a terminal, a shell prompt is printed to the screen with the text <code>revkit&gt;</code> that replace the current directory normally displayed by a terminal. </p>
 <p>To get a list of all the commands and a short description of their usage, one must call the <code>help</code> command. To view more information of each command, run the command with the <code>--help</code> flag. In general, there are three ways to run a program in Revkit:</p>
 <ol>
-<li>Interactive mode: the default command line shell that it is described above. Every command must be written by the user. It is accessed by simply executing Revkit with its alias: </li>
+<li><strong>Interactive mode:</strong> the default command line shell that it is described above. Every command must be written by the user. It is accessed by simply executing Revkit with its alias: </li>
 </ol>
-<pre class="codehilite"><code>~$ revkit
+<div class="codehilite"><pre><span></span>~$ revkit
 revkit&gt;  read_aiger file.aig
 revkit&gt;  cone -o y
 revkit&gt;  simulate -ad
 revkit&gt;  quit
-~$</code></pre>
+~$
+</pre></div>
 
 
 <ol>
-<li>Bash mode: mode where a list of commands  are given to Revkit as command line arguments.To run this method, one must execute Revkit with a <code>-c</code> flag:</li>
+<li><strong>Bash mode:</strong> mode where a list of commands  are given to Revkit as command line arguments.To run this method, one must execute Revkit with a <code>-c</code> flag:</li>
 </ol>
-<pre class="codehilite"><code>~$ revkit -c &quot;read_aiger file.aig; cone -o y; simulate -at; quit&quot;</code></pre>
+<div class="codehilite"><pre><span></span>~$ revkit -c &quot;read_aiger file.aig; cone -o y; simulate -at; quit&quot;
+</pre></div>
 
 
 <p>If you want that every command executed is printed on the screen, add the <code>-e</code> flag</p>
 <ol>
-<li>Batch mode: mode where the list of commands executed are read line by line from a text file. To run this method, one must use call revkit with a <code>-f</code> flag followed by the name of the file with the commands:</li>
+<li><strong>Batch mode:</strong> mode where the list of commands executed are read line by line from a text file. To run this method, one must use call revkit with a <code>-f</code> flag followed by the name of the file with the commands:</li>
 </ol>
-<pre class="codehilite"><code>~$ revkit -f commands.txt</code></pre>
+<div class="codehilite"><pre><span></span>~$ revkit -f commands.txt
+</pre></div>
 
 
 <p>As in bash mode, if you want to print every command used, you can add the <code>-e</code> flag.</p>
 <p>It must be noticed that any line beginning with the "#" character will not be read by Revkit. This is particularly useful for making comments for scripts that will run in Batch mode.</p>
+<ol>
+<li><strong>Python API mode:</strong> mode where we import Revkit as a Python module and work with it inside Python scripts or Jupyter Notebooks. For this mode, we need to install the Python API as detailed in the Installation page.</li>
+</ol>
+<p>In this mode, every command from the command line interface is mapped to a method of the Python module. The flags and arguments of the commands become keywork arguments of the methods in the Python module. The flags become binary keyworkd arguments that can be set to <code>True</code> or <code>Flase</code> menwhile the arguments become normal keyword arguments that must be set to the value that we would give them in the command line. </p>
+<p>For example the following Revkit code:</p>
+<div class="codehilite"><pre><span></span>revkit&gt; tt --load 0xcafe
+revkit&gt; convert --tt_to_aig
+revkit&gt; lhrs --cut_size 3
+revkit&gt; ps -c
+</pre></div>
+
+
+<p>Must be executed in Python in the following way:</p>
+<div class="codehilite"><pre><span></span><span class="kn">import</span> <span class="nn">revkit</span>
+<span class="n">revkit</span><span class="o">.</span><span class="n">tt</span><span class="p">(</span><span class="n">load</span> <span class="o">=</span> <span class="err">“</span><span class="mh">0xcafe</span><span class="err">”</span><span class="p">)</span>
+<span class="n">revkit</span><span class="o">.</span><span class="n">convert</span><span class="p">(</span><span class="n">tt_to_aig</span> <span class="o">=</span> <span class="bp">True</span><span class="p">)</span>
+<span class="n">revkit</span><span class="o">.</span><span class="n">lhrs</span><span class="p">(</span><span class="n">cut_size</span> <span class="o">=</span> <span class="mi">3</span><span class="p">)</span>
+<span class="n">stats</span> <span class="o">=</span> <span class="n">revkit</span><span class="o">.</span><span class="n">ps</span><span class="p">(</span><span class="n">circuit</span> <span class="o">=</span> <span class="bp">True</span><span class="p">)</span>
+</pre></div>
+
+
 <h2 id="creating-logs">Creating logs</h2>
 <p>Passing <code>-l file.log</code> to Revkit creates a log file of the session. This option is particularly useful in batch mode. The log file contains a JSON array with an entry for each command. Each entry contains at least the full command that was run and the time at which the command was started to execute. Some commands write additional data into the log file. </p>
 <p>For example, <code>ps -a</code> writes number of inputs, outputs, and AND gates of an AIG, and <code>quit</code> writes several information about the computer on which Revkit has been executed. Being a JSON array, the log file can be easily parsed as many programming languages have a JSON library.
 \
 \
 Some helper functions to parse the log file and, e.g., create ASCII tables from them can be found in <code>utils/experiments.py</code>. Further, the Python program <code>utils/extract\_script.py</code> extracts a CirKit script file from the the log that can be run in batch mode. This can be helpful when logging an interactive session and then rerunning the commands:</p>
-<pre class="codehilite"><code>~/cirkit$ revkit -l session.log
+<div class="codehilite"><pre><span></span>~/cirkit$ revkit -l session.log
 revkit&gt;  read_aiger file.aig
 revkit&gt;  ps -a
 ...
 revkit&gt;  quit
 cirkit$ utils/extract_script.py session.log &gt; session.cs
-cirkit$ revkit -f session.cs</code></pre>
+cirkit$ revkit -f session.cs
+</pre></div>
 
 
 <p>For performing experimental evaluations, the following workflow is suggested. Create two Python programs (or any other programming language) called <code>make_script.py</code> and <code>make_table.py</code>. The program <code>make_script.py</code> writes a CirKit script. The program <code>make_table.py</code> reads the log file created for the script and prints out a table:</p>
-<pre class="codehilite"><code>~/cirkit$ ./make_script.cs experiments.cs
+<div class="codehilite"><pre><span></span>~/cirkit$ ./make_script.cs experiments.cs
 ~/cirkit$ revkit -f experiments.cs -l experiments.log
-~/cirkit$ ./make_table.cs experiments.log</code></pre>
+~/cirkit$ ./make_table.cs experiments.log
+</pre></div>
 
 
 <h2 id="aliases">Aliases</h2>
 <p>In a traditional programming language, an alias is a function that uses as a basis internal functions of the program to compute a not defined task. In a similar fashion, Revkit allows the definition of aliases: a group of commands and procedures grouped under a single key. An alias is created with the <code>alias</code> command of Revkit. To define an alias we need a key, a string with no spaces, and the list of commands executed by that key. For example:</p>
-<pre class="codehilite"><code>revkit&gt; alias simul &quot;convert --circuit_to_spec ; print -s&quot;</code></pre>
+<div class="codehilite"><pre><span></span>revkit&gt; alias simul &quot;convert --circuit_to_spec ; print -s&quot;
+</pre></div>
 
 
 <p>Note that the command list has to be put into quotes if they contain any space. To add more flexibillity and options to the alias, one can use <a href="https://docs.microsoft.com/en-us/dotnet/standard/base-types/regular-expression-language-quick-reference">regular expressions</a>:</p>
-<pre class="codehilite"><code>alias &quot;(\\w+) &gt; (\\w+) &gt; (\\w+)&quot; &quot;convert --%1%_to_%2%; convert --%2%_to_%3%&quot;</code></pre>
+<div class="codehilite"><pre><span></span>alias &quot;(\\w+) &gt; (\\w+) &gt; (\\w+)&quot; &quot;convert --%1%_to_%2%; convert --%2%_to_%3%&quot;
+</pre></div>
 
 
 <p>The <code>alias</code> command only creates aliases for the current session of Revkit. To add an alias that will we global for all of Revkit's session, add the wished <code>alias</code> command to a new line of the <code>alias</code> text file located in cirkit's main repository.</p>
@@ -332,15 +360,16 @@ cirkit$ revkit -f session.cs</code></pre>
 <p>Every time we create an instance of a data structure in Revkit, this structure is saved in a stored in a fixed memory location called <em>Store</em>. A store can be thought of as an unfixed vector of elements of a given data structure. Each data structure has its own store. </p>
 <p>The <code>store</code> command is used to access and make changes over the stores of Revkit. All stores can hold more than one instance of its data structure. As most commands in Revkit take as an input a data structure, the input is not normally specified: each store has a pointer that each commands takes as an input when it reaches for that data structure as an input. This pointer can be set with the <code>current</code> command .</p>
 <p>To see a list all the elements in the store of a given data structure, execute the command <code>store --show</code> followed by the access option of the data structure. For example:</p>
-<pre class="codehilite"><code>revkit&gt;  store --show -c
+<div class="codehilite"><pre><span></span>revkit&gt;  store --show -c
 [i] circuits in store:
      0: 7 lines, 55 gates
      1: 5 lines, 2 gates
-  *  2: 4 lines, 3 gates</code></pre>
+  *  2: 4 lines, 3 gates
+</pre></div>
 
 
 <p>The <code>*</code> symbol shows which element to which element of the store is the pointer set. To change the element to which the pointer points, we use the <code>current</code> command. This command takes as an argument the access option of the data structure store you wish to access and the number of the element in the store to which you want to set the pointer to point. </p>
-<pre class="codehilite"><code>revkit&gt;  store --show -c
+<div class="codehilite"><pre><span></span>revkit&gt;  store --show -c
 revkit&gt;  store --show -c
 [i] circuits in store:
      0: 7 lines, 55 gates
@@ -351,12 +380,13 @@ revkit&gt;  store --show -c
 [i] circuits in store:
      0: 7 lines, 55 gates
   *  1: 5 lines, 2 gates
-     2: 4 lines, 3 gates</code></pre>
+     2: 4 lines, 3 gates
+</pre></div>
 
 
 <p>As we mentioned before, every command that takes a data structure as input and/or a data structure as output will read or overwrite the current element in the pointer of its store. For the input of most commands, this behaviour can not be modified. Most of the commands that output a data structure have an option with flag <code>-n, --new</code> that specifies that the output data structure is stored in a new element of the store. </p>
 <p>This is particularly useful for the <code>read_*</code> commands. For example. if we have a circuit in store and call the <code>read_real</code> function on a file, the new circuit will be written in the pointer. But if we call the command with the flag <code>read\_real -n</code>, it will be saved in a new element of the store.</p>
-<pre class="codehilite"><code>revkit&gt;  read_real template1.real
+<div class="codehilite"><pre><span></span>revkit&gt;  read_real template1.real
 revkit&gt;  read_real template2.real
 revkit&gt;  store --show -c
 [i] circuits in store:
@@ -366,17 +396,19 @@ revkit&gt;  read_real -n template2.real
 revkit&gt;  store --show -c
 [i] circuits in store:
      0: 3 lines, 2 gates
-  *  1: 3 lines, 2 gates</code></pre>
+  *  1: 3 lines, 2 gates
+</pre></div>
 
 
 <p>To delete all the items in a store, call the <code>store</code> command with the <code>--clear</code> flag followed by the access option of the data structure:</p>
-<pre class="codehilite"><code>revkit&gt;  store --show -c
+<div class="codehilite"><pre><span></span>revkit&gt;  store --show -c
 [i] circuits in store:
      0: 3 lines, 2 gates
   *  1: 3 lines, 2 gates
 revkit&gt;  store --clear -c
 revkit&gt;  store --show -c
-[i] no circuits in store</code></pre>
+[i] no circuits in store
+</pre></div>
 
 
 <p>Most of Revkit commands are sufficiently specific function or name, like the synthesis commands, to need specification over which data structure are operating. However, there are a series of generic commands that can operate on every data structure so we must specify the access option of the store of the data structure over which we want the command to act. The following table lists this commands.</p>
@@ -415,15 +447,17 @@ revkit&gt;  store --show -c
 <p>There are two principal ways in wich we can convert a circuit stored in Revkit to a diagram.</p>
 <h3 id="png-via-qpic-and-latex">PNG via Qpic and Latex</h3>
 <p>To create a PNG image of our circuit we have to use a auxiliary program called <a href="https://github.com/qpic/qpic">Qpic</a>. This is a Python-based program used to draw quantum circuits. Installation instructions are available inside its Github repository. After installing Qpic and supposing that we have a<code>.real</code> file describing a circuit called <code>circuit.real</code>, we can convert it to PNG using the following command:</p>
-<pre class="codehilite"><code>$ revkit -c &quot;read_real circuit.real; write_qpic circuit.qpic&quot;
-$ qpic circuit.qpic -f png -o circuit.png</code></pre>
+<div class="codehilite"><pre><span></span>$ revkit -c <span class="s2">&quot;read_real circuit.real; write_qpic circuit.qpic&quot;</span>
+$ qpic circuit.qpic -f png -o circuit.png
+</pre></div>
 
 
 <p>The first command uses revkit to read the circuit and to output a .qpic file called <code>circuit.qpic</code>. The second command calls qpic to convert the <code>circuit.qpic</code> file into <code>circuit.png</code>. The output file is specified with the <code>-o</code> arrgument as the output format is specified by the <code>-f</code> argument. Other outputs format include .tex,.pdf and .tikz.</p>
 <h3 id="pdf-via-latex">PDF via Latex</h3>
 <p>To create the drawing directly with Revkit to a .pdf file, we should use the following commands:</p>
-<pre class="codehilite"><code>$ revkit -c &quot;read_real circuit.real; write_tikz --standalone circuit.tex&quot;
-$ pdflatex circuit.tex</code></pre>
+<div class="codehilite"><pre><span></span>$ revkit -c <span class="s2">&quot;read_real circuit.real; write_tikz --standalone circuit.tex&quot;</span>
+$ pdflatex circuit.tex
+</pre></div>
 
 
 <p>The first command uses revkit to read the circuit and to ouput a .tex file called <code>circuit.tex</code> that is compiled by the second command to a .pdf file called <code>circuit.pdf</code> that contains the drawing of the circuit. the <code>--standalone</code> indicates that the file created is going to be compiled alone and not as part of a larger Latex project.</p></div>
