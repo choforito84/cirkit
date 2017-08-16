@@ -6,7 +6,7 @@ Revkit is a command line based program, so it does not have a graphical user int
 To get a list of all the commands and a short description of their usage, one must call the `help` command. To view more information of each command, run the command with the `--help` flag. In general, there are three ways to run a program in Revkit:
 
 
-1. Interactive mode: the default command line shell that it is described above. Every command must be written by the user. It is accessed by simply executing Revkit with its alias: 
+1. **Interactive mode:** the default command line shell that it is described above. Every command must be written by the user. It is accessed by simply executing Revkit with its alias: 
 
 ```
 ~$ revkit
@@ -17,14 +17,14 @@ revkit>  quit
 ~$
 ```
 
-2. Bash mode: mode where a list of commands  are given to Revkit as command line arguments.To run this method, one must execute Revkit with a `-c` flag:
+2. **Bash mode:** mode where a list of commands  are given to Revkit as command line arguments.To run this method, one must execute Revkit with a `-c` flag:
 ```
 ~$ revkit -c "read_aiger file.aig; cone -o y; simulate -at; quit"
 ```
 
 If you want that every command executed is printed on the screen, add the `-e` flag
 
-3. Batch mode: mode where the list of commands executed are read line by line from a text file. To run this method, one must use call revkit with a `-f` flag followed by the name of the file with the commands:
+3. **Batch mode:** mode where the list of commands executed are read line by line from a text file. To run this method, one must use call revkit with a `-f` flag followed by the name of the file with the commands:
 ```
 ~$ revkit -f commands.txt
 ```
@@ -34,6 +34,27 @@ As in bash mode, if you want to print every command used, you can add the `-e` f
 
 It must be noticed that any line beginning with the "#" character will not be read by Revkit. This is particularly useful for making comments for scripts that will run in Batch mode.
 
+4. **Python API mode:** mode where we import Revkit as a Python module and work with it inside Python scripts or Jupyter Notebooks. For this mode, we need to install the Python API as detailed in the Installation page.
+
+In this mode, every command from the command line interface is mapped to a method of the Python module. The flags and arguments of the commands become keywork arguments of the methods in the Python module. The flags become binary keyworkd arguments that can be set to `True` or `Flase` menwhile the arguments become normal keyword arguments that must be set to the value that we would give them in the command line. 
+
+For example the following Revkit code:
+```
+revkit> tt --load 0xcafe
+revkit> convert --tt_to_aig
+revkit> lhrs --cut_size 3
+revkit> ps -c
+```
+
+Must be executed in Python in the following way:
+
+```python
+import revkit
+revkit.tt(load = “0xcafe”)
+revkit.convert(tt_to_aig = True)
+revkit.lhrs(cut_size = 3)
+stats = revkit.ps(circuit = True)
+```
 
 ## Creating logs
 Passing `-l file.log` to Revkit creates a log file of the session. This option is particularly useful in batch mode. The log file contains a JSON array with an entry for each command. Each entry contains at least the full command that was run and the time at which the command was started to execute. Some commands write additional data into the log file. 

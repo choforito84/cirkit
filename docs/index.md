@@ -129,3 +129,39 @@ export CIRKIT_HOME=<full-path-to-cirkit-repository>
 export LD_LIBRARY_PATH=$CIRKIT_HOME/ext/lib:$LD_LIBRARY_PATH
 export PATH=$CIRKIT_HOME/ext/bin:$PATH
 ```
+
+## Python API
+
+Revkit can also be used inside Python as a module through an API. In order to build the Python API, we need to have installed [Pybind11](https://github.com/pybind/pybind11). `Pybind11` can be installed executing the following commands in any directory of the file system:
+
+```bash
+git clone https://github.com/pybind/pybind11.git
+cd pybind11
+mkdir build
+cd build
+cmake ..
+make install
+```
+It is recommended that the `make install` command is executed as a root user.  It is also recommended to install `pybind11` package for your python distribution. This can be done through [pip](https://pypi.python.org/pypi/pip) with the command 
+
+```bash
+pip install pybind11
+```
+
+
+
+After installing `pybind11`, one can build the python API executing the following commands in Cirkit main directory:
+
+```bash
+mkdir build
+cd build
+cmake -Denable_cirkit-addon-reversible=ON -Denable_cirkit-addon-formal=ON -Dcirkit_ENABLE_PYTHON_API=ON ..
+make external
+make revkit_python
+```
+
+The Python API will be build inside the `build/programs` folder of Cirkit's main repository. After running these commands, we need to update the `PYTHONPATH` environment variable so Python finds Revkit module each time we want to import it. This can be done permanently by adding the following line to the `.bashrc` file:
+
+```bash
+export PYTHONPATH=$CIRKIT_HOME/build/programs
+```
